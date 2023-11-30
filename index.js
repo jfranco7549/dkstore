@@ -1,0 +1,44 @@
+const express = require('express');
+
+const app = express();
+
+const http = require('http');
+const https = require('https');
+
+const server = http.createServer(app);
+const fs = require('fs');
+var options = {
+    key: fs.readFileSync('./ssl/code.key'),
+    cert: fs.readFileSync('./ssl/code.crt')
+  };
+  https.createServer(options, app).listen(8086);
+var compression = require('compression')
+
+const router = express.Router();
+
+ const multer  = require('multer');
+
+ const mongoose = require('mongoose')
+
+ const mongouri = 'mongodb://0.0.0.0:27017/dkstore'
+ // const mongouri = "mongodb+srv://jfranco:musiuito@cluster0.ogvcv9d.mongodb.net/?retryWrites=true&w=majority"
+ mongoose.connect(mongouri).then(db => console.log('DB is Conneted')).catch( err => {
+     console.log(err)
+ })
+
+app.use(compression())
+
+app.use('/', require('./routes/socket.js'));
+
+app.use('/producto', require('./routes/producto.js'));
+app.use('/tc', require('./routes/tc.js'));
+
+
+app.use(express.static( __dirname+'/public' ))
+//app.use('/socket', require('./routes/socket'));
+
+server.listen(8085, () => {
+ console.log('listening on *:8085');
+});
+
+
