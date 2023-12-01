@@ -1,0 +1,1 @@
+new Vue({el:"#app",vuetify:new Vuetify,data:()=>({vista:"card1",model:null}),computed:{},async mounted(){},methods:{}});
