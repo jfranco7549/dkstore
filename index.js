@@ -11,7 +11,7 @@ var options = {
     key: fs.readFileSync('./ssl/code.key'),
     cert: fs.readFileSync('./ssl/code.crt')
   };
-  https.createServer(options, app).listen(8086);
+  https.createServer(options, app).listen(80);
 var compression = require('compression')
 
 const router = express.Router();
