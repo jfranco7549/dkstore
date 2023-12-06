@@ -20,20 +20,20 @@ const router = express.Router();
 
  const mongoose = require('mongoose')
 
- const mongouri = 'mongodb://software:gAB0n5P6&D@149.50.135.10:54210/dkstore'
+ const mongouri = 'mongodb://localhost:27017/dkstore'
  // const mongouri = "mongodb+srv://jfranco:musiuito@cluster0.ogvcv9d.mongodb.net/?retryWrites=true&w=majority"
  mongoose.connect(mongouri).then(db => console.log('DB is Conneted')).catch( err => {
      console.log(err)
  })
 
 
- 
+ app.set('view engine', 'ejs');
 app.use(compression())
 
 app.use('/', require('./routes/socket.js'));
 
 app.use('/producto', require('./routes/producto.js'));
-app.use('/tc', require('./routes/tc.js'));
+app.use('/postventa', require('./routes/tc.js'));
 
 
 app.use(express.static( __dirname+'/public' ))

@@ -2,10 +2,16 @@ const express = require('express');
 const Producto = require('../models/producto.js')
 const articulo = require('../models/articulo.js')
 const router = express.Router();
-
+const Marca = require('../models/marca.js')
 
 
 const multer  = require('multer');
+
+router.get('/marca',  async (req,res)=>{
+  let list = [];
+  let val = await  Marca.find()
+  res.json(val)
+})
 
 router.get('/list',  async (req,res)=>{
   let list = [];

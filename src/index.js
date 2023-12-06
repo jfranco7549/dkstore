@@ -24,17 +24,26 @@ new Vue({
             servicios: [
                 {
                     nombre: "Instalacion",
+                    url:"video/intalacion.mp4",
+                    ico:"mdi-tools"
                 },
                 {
-                    nombre: "Tecnico",
+                    nombre: " Servicio Tecnico",
+                    url:"video/gg.mp4",
+                    ico:"mdi-cube-send"
                 },
                 {
                     nombre: "Garantia",
+                    url:"video/garantia.mp4",
+                    ico:"mdi-ballot-recount"
                 },
                 {
                     nombre: "Envio Gratis",
+                    url:"video/envio.mp4",
+                    ico:"mdi-van-utility"
                 }
             ],
+            videoP:"video/servicio1.mp4",
             map: null,
             tileLayer: null,
             layers: [],
@@ -96,6 +105,9 @@ new Vue({
 
 
     methods: {
+      setvideo(a){
+        this.videoP = a
+      },
         getcoordenate(){
                
            let coord =[0,0]

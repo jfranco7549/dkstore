@@ -11,10 +11,8 @@ const upload = multer({ dest: "/img" });
 
 
 
-router.post('/sendvideo', upload.single('file'),  async (req,res)=>{
-  console.log('dddddddddddd',req.file)
-      io.emit('ChangerVideo',req.file)
-      res.send('envio')
+router.get('/',  async (req,res)=>{
+  res.redirect('/postventa')
      })
 
 module.exports = router;
