@@ -19,8 +19,9 @@ const router = express.Router();
  const multer  = require('multer');
 
  const mongoose = require('mongoose')
-
- const mongouri = 'mongodb://localhost:27017/dkstore'
+ const mongouri = 'mongodb://software:gAB0n5P6&D@149.50.135.10:54210/dkstore'
+ //const mongouri = 'mongodb://localhost:27017/dkstore'
+ //const mongouri = 'mongodb://localhost:27017/dkstore'
  // const mongouri = "mongodb+srv://jfranco:musiuito@cluster0.ogvcv9d.mongodb.net/?retryWrites=true&w=majority"
  mongoose.connect(mongouri).then(db => console.log('DB is Conneted')).catch( err => {
      console.log(err)
