@@ -10,6 +10,7 @@ const multer  = require('multer');
 router.get('/marca',  async (req,res)=>{
   let list = [];
   let val = await  Marca.find()
+  console.log(val[45])
   res.json(val)
 })
 

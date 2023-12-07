@@ -42,15 +42,16 @@ new Vue({
         ],
           TerminoYCondiciones:[
             {
-              nombre:"Mercancía de Venta Especial",
-              imagen:"img/MD/especial.jpg",
+              nombre:"Mercancía de Venta Ordinaria",
+              imagen:"img/MD/normal.png",
               status:false
             },
             {
-              nombre:"Mercancía de Venta Ordinaria",
-              imagen:"img/MD/normal.jpg",
+              nombre:"Mercancía de Venta Especial",
+              imagen:"img/MD/especial.jpg",
               status:false
             }
+           
           ],
           vista1:'card1',
           model: null,
@@ -65,8 +66,10 @@ new Vue({
     async mounted() {
       let marca = await fetch('/producto/marca')
       marca = await marca.json()
-    
+    console.log(marca[45])
     this.marca = marca
+     document.getElementById('loading').style.display = "none" 
+     
     this.dialog = true;
   },
 

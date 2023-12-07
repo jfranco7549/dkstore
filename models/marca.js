@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const marca = new  Schema({
  nombre:String,
- telefono:Number,
+ telefono:String,
  web:String,
  tipo:String,
 })
