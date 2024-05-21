@@ -17,9 +17,53 @@ new Vue({
         return {
             modal: {
                 servicios: false,
-                quienes: false
+                quienes: false,
+                producto:false
+            },
+            pag:{
+              cant:0,
+              inicio:0,
+              ruta:'/producto/list/',
+              fin:0,
+              actual:1,
+
             },
             zoom: 2,
+            MenuCategoria:[
+              {
+                Nombre:"Linea Digital",
+                producto:[
+
+                  "LD-00000632","LD-00000633","LD-00000634","LD-00000635"
+
+                ]
+              },
+              {
+                Nombre:"Linea Marron",
+                producto:[
+
+                  "LM-00000092","LM-00000086","LM-00000084","LM-00000035"
+
+                ]
+              },
+              {
+                Nombre:"Linea Hogar",
+                producto:[
+
+                  "LH-00000018","LH-00000028","LH-00000058","LH-00000098"
+
+                ]
+              },
+              {
+                Nombre:"Linea Blanca",
+                producto:[
+
+                  "LB-00000632","LB-00000633","LB-00000634","LB-00000635"
+
+                ]
+              },
+            ],
+            comprar:true,
             init:false,
             servicios: [
                 {
@@ -43,13 +87,78 @@ new Vue({
                     ico:"mdi-van-utility"
                 }
             ],
+            catselect:'',
+            Pdestacado:[
+              {sap:'LB-00000478'},
+              {sap:'LB-00001048'},
+              {sap:"LB-00000632"},
+              {sap:'LB-00000972'}
+            ],
+            categoria:[
+              "MICROONDAS",
+"CAMPANAS",
+"HORNOS",
+"SECADORAS PAREJAS",
+"REFRIGERADORES PAREJA",
+"CONGELADORES VERTICALES",
+"LAVAVAJILLAS",
+"AIRES COMERCIALES",
+"LAVADORAS AUTOMATICAS",
+"HORNOS DOBLES",
+"TOPES ELECTRICOS",
+"TOPES A GAS",
+"COCINAS A GAS",
+"REFRIGERADORES",
+"LAVADORAS/SECADORAS",
+"AIRES SPLITS 12 MIL",
+"DISPENSADORES DE AGUA",
+"CONGELADORES DOMESTICOS",
+"AIRES PORTATILES",
+"AIRES VENTANA 12 MIL",
+"AIRES VENTANA 05 MIL",
+"SECADORAS",
+"COCINAS ELECTRICAS",
+"LAVADORAS SEMIAUTOMATICAS",
+"FABRICADORES DE HIELO COMPACTOS",
+"NEVERAS EJECUTIVAS",
+"MANTAS",
+"CORNETAS",
+"TV 55 PULG",
+"TV 65 PULG",
+"TV 58 PULG",
+"TV 50 PULG",
+"TV 70 PULG",
+"TV 75 PULG",
+"TV 43 PULG",
+"ACCESORIOS P/TV",
+"TV 86 PULG",
+"TV 85 PULG",
+"TV 32 PULG",
+"TV 98 PULG",
+"TV 77 PULG"
+            ],
             videoP:"video/servicio1.mp4",
             map: null,
+            cliente:{
+              nombre:'',
+              cedula:'',
+              direccion:''
+            },
+            metodoSelect:'',
+            modelProd:null,
+            metodos: ["Delivery","Retiro En tienda"],
+            tiendas: ['Agencia Valencia',"Agencia Valencia Centro", "agencia San Diego","agencia puerto la cruz", "agencia porlamar","agencia Maracay","agencia MAracay Centro","agencia yaracuy"],
             tileLayer: null,
             layers: [],
             carrito: [],
             menus: [
 
+            ],
+            icons: [
+              'mdi-facebook',
+              'mdi-twitter',
+              'mdi-whatsapp',
+              'mdi-instagram',
             ],
             items: [
                 {
@@ -65,6 +174,7 @@ new Vue({
 
             ],
             articulos: [],
+            categoriaico:{},
             buscador: '',
             drawer: false,
         }
@@ -93,14 +203,22 @@ new Vue({
 
         document.body.onload = function () {
             let loading = document.getElementById('loads')
-
-            loading.setAttribute("class", "hides");
+            setTimeout(function(){
+  loading.setAttribute("class", "hides");
+},"2000")
+            
         }
        
-
+        
+      
         let res = await fetch('/producto/list')
         res = await res.json()
-        this.articulos = res
+        this.articulos = res.list
+        let cant = res.cant
+        if(cant == 0 ){
+          cant = 1;
+        }
+        this.pag.cant = cant
     },
 
 
@@ -280,7 +398,7 @@ map.on('pointermove', function (event) {
     
           },
          
-        openModal(a) {
+        async openModal(a,b) {
 
             if (a == 'quienes') {
                 this.modal.quienes = true
@@ -288,21 +406,47 @@ map.on('pointermove', function (event) {
                 this.createMap()
                 this.init = true;
                }
-            } else {
+            } 
+            if (a == 'servicios') {
                 this.modal.servicios = true
             }
+            if (a == 'producto') {
+
+              if(typeof b == "string"){
+                let p = await fetch('/producto/getproducto/' + b)
+    
+                p = await p.json()
+                console.log(p)
+                b = p
+              }
+             
+              this.modelProd = b
+              let res = await fetch('/producto/caracterisctica/'+b.sap)
+              res = await res.json()
+              console.log(res)
+              this.modelProd['caracteristica'] = res.valor
+              this.categoriaico = res.ico
+              this.modal.producto = true
+              console.log(this.categoriaico)
+          }
         },
         colorPromo(a) {
             if (a == 'PROMO') {
                 return "#143E8F"
             }
         },
+       
         SendWhs() {
-            let total = 'lista:';
+     
+            let total = 'Hola '+this.cliente.nombre+"%0A%0A Bienvenido(a) a tiendas daka %0A";
+            total += 'Direccion:'+this.cliente.direccion+'%0A';
+            total += 'cedula:'+this.cliente.cedula+'%0A%0A';
+            total += 'PRODUCTO %0A';
             this.carrito.forEach((item) => {
-                total = total + " - " + item.sap;
+                total = total + " %0A " +item.sap+' - '+ item.descripcion;
             })
-
+            total += ' %0A %0AEl monto total a cancelar es de '+this.totalCarro+'$.';
+          
             let msm = 'https://api.whatsapp.com/send/?phone=584160289275&text=' + total + '&type=phone_number&app_absent=0'
             location.href = msm
         },
@@ -315,24 +459,73 @@ map.on('pointermove', function (event) {
                 }
             })
         },
-        filtro(a) {
-            let categoria = [];
-            this.articulos.forEach(element => {
+        async nextp(tipo){
+          let res 
+          if(tipo == 'up'){
+            console.log(tipo)
+            this.pag.inicio = this.pag.inicio+20
+            this.pag.fin = this.pag.fin+20
+             res = await fetch(this.pag.ruta+this.pag.inicio+'/'+this.pag.fin)
+          }
+          if(tipo == 'down'){
+            console.log(tipo)
+            this.pag.inicio = this.pag.inicio-20
+            this.pag.fin = this.pag.fin-20
+             res = await fetch(this.pag.ruta+ this.pag.inicio +'/'+this.pag.fin)
+          }
 
-                if (element.descripcion.search(this.buscador.toUpperCase()) == -1) {
+          if(tipo == 'click'){
+            console.log(tipo)
+            this.pag.inicio = (this.pag.actual*20)-20
+            this.pag.fin = this.pag.actual*20
+            res = await fetch(this.pag.ruta+ this.pag.inicio +'/'+this.pag.fin)
+          }
+         
+          res = await res.json()
 
-                    element.view = false;
-                } else {
-                    categoria.push(element.familia)
-                    element.view = true;
-                }
-                let result = categoria.filter((item, index) => {
-                    return categoria.indexOf(item) === index;
-                })
-                this.menus = result
-            });
+          this.articulos = res
 
         },
+
+       async filtro(a) {
+            let categoria = [];
+console.log(this.buscador.toUpperCase())
+            let res = await fetch('/producto/list_des/'+this.buscador.toUpperCase()+'/0/20')
+            this.pag.inicio = 0
+            this.pag.fin = 20
+            this.pag.ruta = '/producto/list_des/'+this.buscador.toUpperCase()
+            this.pag.actual = 1
+             res = await res.json()
+             console.log(res)
+            this.articulos = res
+           
+           
+        },
+       async filtroC(a) {
+
+          let res = await fetch('/producto/list/'+a)
+           
+          res = await res.json()
+         
+         this.articulos = res
+
+          let categoria = [];
+          this.articulos.forEach(element => {
+          
+            if(element.categoria == a){
+               console.log(element)
+               console.log(categoria)
+              element.view = true; 
+              categoria.push(element)
+            }else {
+              element.view = false;
+          }
+        
+        this.menus = categoria
+    
+          });
+
+      },
         RemoveCarrito(articulo) {
             articulo['carrito'] = false;
             var index = this.carrito.findIndex(e => e == articulo);
@@ -346,6 +539,9 @@ map.on('pointermove', function (event) {
         addCarrito(articulo) {
             articulo['carrito'] = true;
             this.carrito.push(articulo)
+            if(this.modal.producto){
+              this.modal.producto =false
+            }
         },
         async getinfo(articulo, tipo) {
 

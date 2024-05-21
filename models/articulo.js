@@ -7,7 +7,8 @@ const articulo = new  Schema({
  precio:Number,
  marca:String,
  familia:String,
- promo:String
+ promo:Boolean,
+ categoria:String
 })
 
 module.exports = mongoose.model('articulo',articulo,'articulo');
