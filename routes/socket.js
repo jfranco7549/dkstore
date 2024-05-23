@@ -14,7 +14,9 @@ router.get('/c2p',  async (req,res)=>{
      })
 
 router.get('/',  async (req,res)=>{
-  res.redirect('index.html')
+  
+  res.render('index')
+  //res.redirect('index.html')
      })
     
 

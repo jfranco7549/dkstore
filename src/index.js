@@ -32,36 +32,21 @@ new Vue({
             MenuCategoria:[
               {
                 Nombre:"Linea Digital",
-                producto:[
-
-                  "LD-00000632","LD-00000633","LD-00000634","LD-00000635"
-
-                ]
-              },
-              {
-                Nombre:"Linea Marron",
-                producto:[
-
-                  "LM-00000092","LM-00000086","LM-00000084","LM-00000035"
-
-                ]
-              },
-              {
-                Nombre:"Linea Hogar",
-                producto:[
-
-                  "LH-00000018","LH-00000028","LH-00000058","LH-00000098"
-
-                ]
+                producto:["LD-00000027"]
               },
               {
                 Nombre:"Linea Blanca",
-                producto:[
-
-                  "LB-00000632","LB-00000633","LB-00000634","LB-00000635"
-
-                ]
+                producto:["LB-00000001"]
               },
+              {
+                Nombre:"Linea Marron",
+                producto:["LM-00000023"]
+              },
+              {
+                Nombre:"Linea Hogar",
+                producto:["LH-00000006"]
+              }
+              
             ],
             comprar:true,
             init:false,
@@ -192,7 +177,13 @@ new Vue({
     },
 
     async mounted() {
+        this.ProductoDestacado()
+         this.ProductoLinea()
         let that = this;
+        
+        
+      
+        
         /*
      
         
@@ -226,184 +217,51 @@ new Vue({
       setvideo(a){
         this.videoP = a
       },
-        getcoordenate(){
-               
-           let coord =[0,0]
-                if (!"geolocation" in navigator) {
-                    return alert("Tu navegador no soporta el acceso a la ubicación. Intenta con otro");
-                }
-            
-                const onUbicacionConcedida = ubicacion => {
-                 coord =  ubicacion.coords
+       
+     async Getlinea(a){
+
+        let categoria = [];
+        console.log(this.buscador.toUpperCase())
+                    let res = await fetch('/producto/list_linea/'+a+'/0/20')
+                    this.pag.inicio = 0
+                    this.pag.fin = 20
+                    this.pag.ruta = '/producto/list_linea/'+a
+                    this.pag.actual = 1
+                     res = await res.json()
+                     
+                    this.articulos = res
                    
-                }
-              
-                const onErrorDeUbicacion = err => {
-                    console.log("Error obteniendo ubicación: ", err);
-                }
-            
-                const opcionesDeSolicitud = {
-                    enableHighAccuracy: true, // Alta precisión
-                    maximumAge: 0, // No queremos caché
-                    timeout: 5000 // Esperar solo 5 segundos
-                };
-                // Solicitar
-                   navigator.geolocation.getCurrentPosition(onUbicacionConcedida, onErrorDeUbicacion, opcionesDeSolicitud);
-            
-            return coord
-        },
 
-       async createMap(){
-        
-        let coord =[ 0,0]
-        if (!"geolocation" in navigator) {
-            return alert("Tu navegador no soporta el acceso a la ubicación. Intenta con otro");
-        }
-    
-        const onUbicacionConcedida = ubicacion => {
-            
-            console.log('sucess')
-            useGeographic()
-         coord =  ubicacion.coords
-         console.log(coord)
-         const point = new Point([-68.00,10.18] );//[-68.00216736,10.18169075]);
-         const map = new Map({
-           view: new View({
-             center: [coord.longitude,coord.latitude] ,
-             zoom: 12,
-           }),
-           layers: [
-             new TileLayer({
-               source: new OSM(),
-             }),
-             new VectorLayer({
-                source: new VectorSource({
-                  features: [new Feature(point)],
-                }),
-                style: {
-                  'circle-radius': 9,
-                  'circle-fill-color': 'yellow',
-                },
-              }),
-              new VectorLayer({
-                source: new VectorSource({
-                  features: [new Feature([-67.96484355,10.21192094])],
-                }),
-                style: {
-                  'circle-radius': 9,
-                  'circle-fill-color': 'yellow',
-                },
-              })
-           ],
-           target: 'map',
-         });
-         const element = document.getElementById('popup');
+      },
+        async ProductoDestacado(){
+          let consul = await fetch('/producto/destacado')
+          consul = await consul.json()
+          console.log(consul)
+          this.Pdestacado = await  consul
+         },
 
-const popup = new Overlay({
-  element: element,
-  stopEvent: false,
-});
-map.addOverlay(popup);
-const layer = new TileLayer({
-    source: new StadiaMaps({
-      layer: 'stamen_toner',
-    }),
-  });
-const image = new Circle({
-    radius: 8,
-    fill: new Fill({color: 'rgb(255, 153, 0)'}),
-  });
+         async ProductoLinea(a){
+          let res =[]
+          for(let linea in this.MenuCategoria){
+             let consul = await fetch('/producto/lineas/'+this.MenuCategoria[linea].Nombre)
+          consul = await consul.json()
+          res = await consul
+          this.MenuCategoria[linea].producto = res
+         console.log(res)
   
-  const style = new Style({
-    image: image,
-  });
-  let geometries = [];
-  geometries.push(new Point([-67.96484355,10.21192094]));
-  map.render();
-  layer.on('postrender', function (event) {
-    const vectorContext = getVectorContext(event);
-  
-    for (let i = 0; i < n; ++i) {
-      const importance = upAndDown(Math.pow((n - i) / n, 0.15));
-      if (importance < 0.1) {
-        continue;
-      }
-      image.setOpacity(importance);
-      image.setScale(importance);
-      vectorContext.setStyle(style);
-      vectorContext.drawGeometry(geometries[i]);
-    }
-  
-    
-    geometries.shift();
-    map.render();
-  });
-map.on('moveend', function () {
-  const view = map.getView();
-  const center = view.getCenter();
-  
-});
-
-let popover;
-map.on('click', function (event) {
-  if (popover) {
-    popover.dispose();
-    popover = undefined;
-  }
-  const feature = map.getFeaturesAtPixel(event.pixel)[0];
-  if (!feature) {
-    return;
-  }
-  const coordinate = feature.getGeometry().getCoordinates();
-  popup.setPosition([
-    coordinate[0] + Math.round(event.coordinate[0] / 360) * 360,
-    coordinate[1],
-  ]);
-
-  
-});
-
-map.on('pointermove', function (event) {
-  const type = map.hasFeatureAtPixel(event.pixel) ? 'pointer' : 'inherit';
-  map.getViewport().style.cursor = type;
-});
-           
-        }
-      
-        const onErrorDeUbicacion = err => {
-     console.log('error',err)
-            useGeographic()
-            
-            const map = new Map({
-              view: new View({
-                center: [-68.00,10.24] ,
-                zoom: 1,
-              }),
-              layers: [
-                new TileLayer({
-                  source: new OSM(),
-                }),
-              ],
-              target: 'map',
-            });
-        }
-    
-        const opcionesDeSolicitud = {
-            enableHighAccuracy: true, // Alta precisión
-            maximumAge: 0, // No queremos caché
-            timeout: 5000 // Esperar solo 5 segundos
-        };
-        // Solicitar
-           navigator.geolocation.getCurrentPosition(onUbicacionConcedida, onErrorDeUbicacion, opcionesDeSolicitud);
-    
-          },
+          }
          
+    
+         
+
+          
+         },
         async openModal(a,b) {
 
             if (a == 'quienes') {
                 this.modal.quienes = true
                if(!this.init){
-                this.createMap()
+                //this.createMap()
                 this.init = true;
                }
             } 
@@ -447,7 +305,7 @@ map.on('pointermove', function (event) {
             })
             total += ' %0A %0AEl monto total a cancelar es de '+this.totalCarro+'$.';
           
-            let msm = 'https://api.whatsapp.com/send/?phone=584160289275&text=' + total + '&type=phone_number&app_absent=0'
+            let msm = 'https://api.whatsapp.com/send/?phone=584244624218&text=' + total + '&type=phone_number&app_absent=0'
             location.href = msm
         },
         menuSelect(a) {
@@ -488,6 +346,10 @@ map.on('pointermove', function (event) {
         },
 
        async filtro(a) {
+        if(a == 'inicio'){
+          console.log('inicio')
+          this.buscador = ''
+        }
             let categoria = [];
 console.log(this.buscador.toUpperCase())
             let res = await fetch('/producto/list_des/'+this.buscador.toUpperCase()+'/0/20')
@@ -496,7 +358,7 @@ console.log(this.buscador.toUpperCase())
             this.pag.ruta = '/producto/list_des/'+this.buscador.toUpperCase()
             this.pag.actual = 1
              res = await res.json()
-             console.log(res)
+             
             this.articulos = res
            
            

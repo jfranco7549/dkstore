@@ -330,8 +330,8 @@ body{
 
         <v-app-bar absolute   height='60' style="position: sticky;" dense  color="#FFDD00" >
 
-          <v-app-bar-title  @click="filtro()" class="pt-4 m-2" >
-            <v-img   width="80"   @click="filtro()" class="mb-4 m-2 p-4"  src="img/logoF.png"></v-img>
+          <v-app-bar-title  @click="filtro('inicio')" class="pt-4 m-2" >
+            <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="img/logoF.png"></v-img>
           </v-app-bar-title>
        
                <v-spacer></v-spacer>
@@ -354,7 +354,7 @@ body{
 
             <v-tabs background-color="#FFFF" align-with-title>
 
-              <v-tab @click="filtro()">Inicio</v-tab>
+              <v-tab @click="filtro('inicio')">Inicio</v-tab>
               <v-tab @click="menuSelect('PROMO')">Promociones</v-tab>
             
              <v-tab>
@@ -384,7 +384,7 @@ body{
             </v-tab>
             <v-spacer></v-spacer>
           <v-tab>
-             <!--   <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
+           <!--  <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
           </v-tab>
             <!--
                <v-tab @click="openModal('quienes')">Ubicanos </v-tab>
@@ -583,16 +583,13 @@ body{
                     </v-row>
                   
                   </v-col>
-                  <v-col class="p-2"  cols="12" >
+                  <v-col class="p-2" v-if="buscador ==''"   cols="12" >
                  <v-container>
                   <v-row>
                      
-                    <v-col v-for="Linea of MenuCategoria" id="lateralder" cols="3">
+                    <v-col v-for="Linea of MenuCategoria" id="lateralder" cols="12" xs="6" sm="12" md="12" lg="3" xl="3" >
                       <v-card
                       class="m-auto"
-                     width="280"
-                    
-                     
                       outlined
                       tile
                     >
@@ -600,19 +597,21 @@ body{
                     <v-card-title>{{Linea.Nombre}}</v-card-title>
                       <v-container fluid>
                         <v-row dense>
-                          <v-col v-for="articulo of Linea.producto">
+                          <v-col cols="6"  v-for="articulo of Linea.producto">
                             <v-card 
+                            @click="openModal('producto',articulo)"
                             elevation="0"
-                             height="125"
-                            width="100">
-                              <v-img  xa contain :src="'/img/producto/'+articulo+'.jpg'"></v-img>
+                             height="150"
+                            width="125">
+                            
+                           <v-img  xa contain :src="'/img/producto/'+articulo+'.jpg'"></v-img>
                             </v-card>
                           </v-col>
                          
                         </v-row>
                       </v-container>
                     <v-card-actions>
-                      <v-btn color='primary' text>
+                      <v-btn @click="Getlinea(Linea.Nombre)" color='primary' text>
                         ver mas
                       </v-btn>
                       <v-spacer></v-spacer>
@@ -662,7 +661,7 @@ body{
                                 >
                                           <v-col cols="12">
                                         
-                                            <v-img @click="openModal('producto',n.sap)" xa contain :src="'/img/producto/'+n.sap+'.jpg'"></v-img>
+                                            <v-img @click="openModal('producto',n)" xa contain :src="'/img/producto/'+n+'.jpg'"></v-img>
                                           </v-col>
                                 </v-row>
                               </v-card>
@@ -675,7 +674,7 @@ body{
                     </v-row>
                     
                   </v-col>
-                  <v-col cols="12">
+                  <v-col  cols="12">
                     <v-row>
 
                       <v-col cols="12">
