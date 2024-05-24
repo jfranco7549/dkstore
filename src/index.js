@@ -130,6 +130,7 @@ new Vue({
               direccion:''
             },
             metodoSelect:'',
+            banner:true,
             modelProd:null,
             metodos: ["Delivery","Retiro En tienda"],
             tiendas: ['Agencia Valencia',"Agencia Valencia Centro", "agencia San Diego","agencia puerto la cruz", "agencia porlamar","agencia Maracay","agencia MAracay Centro","agencia yaracuy"],
@@ -221,17 +222,15 @@ new Vue({
      async Getlinea(a){
 
         let categoria = [];
-        console.log(this.buscador.toUpperCase())
+    
                     let res = await fetch('/producto/list_linea/'+a+'/0/20')
                     this.pag.inicio = 0
                     this.pag.fin = 20
                     this.pag.ruta = '/producto/list_linea/'+a
                     this.pag.actual = 1
-                     res = await res.json()
-                     
+                    res = await res.json()
                     this.articulos = res
-                   
-
+                    this.banner = false;
       },
         async ProductoDestacado(){
           let consul = await fetch('/producto/destacado')
@@ -300,8 +299,10 @@ new Vue({
             total += 'Direccion:'+this.cliente.direccion+'%0A';
             total += 'cedula:'+this.cliente.cedula+'%0A%0A';
             total += 'PRODUCTO %0A';
+            
             this.carrito.forEach((item) => {
-                total = total + " %0A " +item.sap+' - '+ item.descripcion;
+              
+                total = total + " %0A " +item.sap+' -'+item.precio+' $ - '+ item.descripcion;
             })
             total += ' %0A %0AEl monto total a cancelar es de '+this.totalCarro+'$.';
           
@@ -349,6 +350,7 @@ new Vue({
         if(a == 'inicio'){
           console.log('inicio')
           this.buscador = ''
+          this.banner = true
         }
             let categoria = [];
 console.log(this.buscador.toUpperCase())
@@ -392,7 +394,7 @@ console.log(this.buscador.toUpperCase())
             articulo['carrito'] = false;
             var index = this.carrito.findIndex(e => e == articulo);
             if (index == 0) {
-                this.carrito = [];
+              this.carrito.splice(index, 1);
                 return;
             }
             this.carrito.splice(index, index);

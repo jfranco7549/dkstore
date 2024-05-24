@@ -369,9 +369,9 @@ body{
                     Categoria
                   </v-btn>
                 </template>
-                <v-list>
+               
+                <v-list   height="120px">
                   <v-list-item
-                  height="20"
                     v-for="(item, index) in categoria"
                     :key="index"
                   >
@@ -382,9 +382,13 @@ body{
             
              
             </v-tab>
+            <v-tab>
+             
+            </v-tab>
             <v-spacer></v-spacer>
           <v-tab>
-           <!--  <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
+
+           <!--  <v-combobox :items="categoria"></v-combobox>  <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
           </v-tab>
             <!--
                <v-tab @click="openModal('quienes')">Ubicanos </v-tab>
@@ -625,13 +629,13 @@ body{
 
                  </v-container>
                   </v-col>
-                  <v-col   v-if="buscador ==''" class="bannerAzul"  cols="12" >
+                  <v-col   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
                     <v-row>
                       <v-spacer></v-spacer> <v-col class="text-center"> PRODUCTOS DESTACADOS </v-col>      <v-spacer></v-spacer> 
                     </v-row>
                   
                   </v-col>
-                  <v-col  v-if="buscador ==''" cols="12">
+                  <v-col  v-if="buscador =='' && banner " cols="12">
                     <v-row>
                       <v-spacer></v-spacer>
                       <v-col>
