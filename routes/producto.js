@@ -118,7 +118,7 @@ try{
       let ar = await  Producto.findOne({sap:articulo.sap})
      
       if(ar){
-        list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+        list.push({sap:articulo.sap,categoria:articulo.categoria,promo:articulo.promo,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
       }
     }
      
@@ -130,6 +130,38 @@ try{
   res.json({list:[],cant:0})
 }
       })
+      router.get('/promo/:inicio/:fin',  async (req,res)=>{
+        try{
+          if(req.params.inicio < 0){
+            req.params.inicio = 0
+          }
+          if(req.params.fin < 0){
+            req.params.fin = 0
+          }
+          console.log(req.params.inicio,req.params.fin)
+          let list = [];
+          let val = await  articulo.find({status:true,promo:true}).skip(req.params.inicio).limit(req.params.fin)
+          let cont = await  articulo.find({status:true,promo:true}).count()
+          console.log("fueron "+ cont)
+          for( let articulo of val ){
+            if(articulo.status){
+              let ar = await  Producto.findOne({sap:articulo.sap})
+            
+              if(ar){
+                list.push({sap:articulo.sap,categoria:articulo.categoria,promo:articulo.promo,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+              }
+            }
+             
+          }
+        
+             res.json({valor:list,n:cont})
+
+        }catch(err){
+          console.log(err)
+          res.json(list)
+
+        }
+            })
       router.get('/list/:inicio/:fin',  async (req,res)=>{
         try{
           if(req.params.inicio < 0){
@@ -148,7 +180,7 @@ try{
               let ar = await  Producto.findOne({sap:articulo.sap})
             
               if(ar){
-                list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+                list.push({sap:articulo.sap,categoria:articulo.categoria,promo:articulo.promo,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
               }
             }
              
@@ -183,7 +215,7 @@ try{
            
             if(ar){
               if(ar.status){
-                list.push({sap:ar.sap,categoria:ar.categoria,precio:ar.precio,descripcion:p.descripcion,marca:ar.marca,familia:ar.familia,view:true})
+                list.push({sap:ar.sap,categoria:ar.categoria,promo:ar.promo,precio:ar.precio,descripcion:p.descripcion,marca:ar.marca,familia:ar.familia,view:true})
             }
           }
            
@@ -215,7 +247,7 @@ try{
              
              
               if(prod){
-                list.push({sap:p.sap,categoria:p.categoria,precio:p.precio,descripcion:prod.descripcion,marca:p.marca,familia:p.familia,view:true})
+                list.push({sap:p.sap,promo:p.promo, categoria:p.categoria,precio:p.precio,descripcion:prod.descripcion,marca:p.marca,familia:p.familia,view:true})
             }
              
           }
@@ -240,7 +272,7 @@ try{
 
             if(ar){
               
-              list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+              list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,promo:articulo.promo,familia:articulo.familia,view:true})
             }
           
            
@@ -261,7 +293,7 @@ try{
     if(articulo.status){
       let ar = await  Producto.findOne({sap:articulo.sap})
       if(ar){
-        list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+        list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,promo:articulo.promo,familia:articulo.familia,view:true})
       }
     }
      
@@ -284,7 +316,7 @@ try{
   console.log(articulos)
   let ar = await  Producto.findOne({sap:req.params.sap})
   console.log(ar)
-     res.json({sap:articulos.sap,categoria:articulos.categoria,precio:articulos.precio,descripcion:ar.descripcion,marca:articulos.marca,familia:articulos.familia,view:true})
+     res.json({sap:articulos.sap,categoria:articulos.categoria,precio:articulos.precio,promo:articulo.promo,descripcion:ar.descripcion,marca:articulos.marca,familia:articulos.familia,view:true})
     
 }catch(err){
   console.log(err,'237')

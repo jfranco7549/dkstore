@@ -210,6 +210,18 @@ new Vue({
       setvideo(a){
         this.videoP = a
       },
+      async getpromo(){
+
+        let res = await fetch('/producto/promo/0/20')
+        res = await res.json()
+        this.pag.ruta = "/producto/promo/0/20"
+        this.articulos = res.valor
+        let cant = res.n
+        if(cant == 0 ){
+          cant = 1;
+        }
+        this.pag.cant = cant
+      },
       async getproducto(){
 
         let res = await fetch('/producto/list')

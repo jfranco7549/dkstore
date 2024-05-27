@@ -328,7 +328,7 @@ body{
     <v-app>
       <v-main>
 
-        <v-app-bar absolute   height='60' style="position: sticky;" dense  color="#FFDD00" >
+        <v-app-bar absolute   height='60' style="position: sticky;touch-action: none;" dense  color="#FFDD00" >
 
           <v-app-bar-title  @click="filtro('inicio')" class="pt-4 m-2" >
             <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="img/logoF.png"></v-img>
@@ -355,7 +355,7 @@ body{
             <v-tabs background-color="#FFFF" align-with-title>
 
               <v-tab @click="filtro('inicio')">Inicio</v-tab>
-              <v-tab @click="menuSelect('PROMO')">Promociones</v-tab>
+              <v-tab @click="getpromo()">Promociones</v-tab>
             
              <v-tab>
               <v-menu  offset-y>
@@ -695,7 +695,7 @@ body{
                                   <v-col   xs="6" sm="6" cols="12">
                                     <v-card   width="100%" height="100%" color="#FFFFFF" >
                                        <v-img class="imgcard"  width="400"   contain  :src="'img/producto/'+modelProd.sap+'.jpg'">
-                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.familia=='PROMO'" src="img/banner/promoM.png" ></v-img>
+                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.promo" src="img/banner/promoM.png" ></v-img>
     
                                     </v-img>
                                     </v-card>
@@ -744,7 +744,7 @@ body{
                                                   <v-icon>{{categoriaico[caract.atributo]}}</v-icon>
                                                 </v-list-item-icon>
                                                 <v-list-item-content>
-                                                   <v-list-item-title class="caption"><h5>  {{caract.caracter+"  "}} {{caract.unidad}}</h5></v-list-item-title>
+                                                   <v-list-item-title class="caption"><h5>  {{caract.unidad+"  "}} {{caract.caracter}}</h5></v-list-item-title>
                                                    <v-list-item-subtitle class="subtitle-2"> <h6>{{caract.atributo}}</h6></v-list-item-subtitle>
                                                 </v-list-item-content>
                                               </v-list-item>
@@ -886,12 +886,12 @@ body{
                             <v-col>
                               <v-card width="300" >
 
-
-                              
+                               
                                 <v-img @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.jpg'">
-                                  <v-img width="300"  height="200" contain   v-if="articulo.promo=='PROMO'" src="img/banner/promoM.png" >
-
+                                 
+                                  <v-img width="400"  height="200" contain   v-if="articulo.promo" src="img/banner/promoM.png" >
                                   </v-img>
+                                  
 
                                 </v-img>
 
@@ -906,6 +906,7 @@ body{
                               <v-row  height="520px">
                                 <v-col  cols="12">
                                   <p>{{articulo.descripcion}}</p> 
+                                 
                                 </v-col>
                               </v-row>
                             </v-card-text>
