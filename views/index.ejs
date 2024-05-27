@@ -374,6 +374,7 @@ body{
                   <v-list-item
                     v-for="(item, index) in categoria"
                     :key="index"
+                    style="background-color: #ffffff;"
                   >
                     <v-list-item-title  @change="filtroC()"> <v-btn text @click="filtroC(item)">{{ item }}</v-btn></v-list-item-title>
                   </v-list-item>

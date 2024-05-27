@@ -23,7 +23,7 @@ new Vue({
             pag:{
               cant:0,
               inicio:0,
-              ruta:'/producto/list/',
+              ruta:'/producto/list',
               fin:0,
               actual:1,
 
@@ -201,22 +201,25 @@ new Vue({
             
         }
        
-        
+        this.getproducto()
       
-        let res = await fetch('/producto/list')
-        res = await res.json()
-        this.articulos = res.list
-        let cant = res.cant
-        if(cant == 0 ){
-          cant = 1;
-        }
-        this.pag.cant = cant
     },
 
 
     methods: {
       setvideo(a){
         this.videoP = a
+      },
+      async getproducto(){
+
+        let res = await fetch('/producto/list')
+        res = await res.json()
+        this.articulos = res.valor
+        let cant = res.n
+        if(cant == 0 ){
+          cant = 1;
+        }
+        this.pag.cant = cant
       },
        
      async Getlinea(a){
@@ -229,7 +232,7 @@ new Vue({
                     this.pag.ruta = '/producto/list_linea/'+a
                     this.pag.actual = 1
                     res = await res.json()
-                    this.articulos = res
+                    this.articulos = res.valor
                     this.banner = false;
       },
         async ProductoDestacado(){
@@ -319,30 +322,32 @@ new Vue({
             })
         },
         async nextp(tipo){
+
           let res 
           if(tipo == 'up'){
             console.log(tipo)
             this.pag.inicio = this.pag.inicio+20
             this.pag.fin = this.pag.fin+20
-             res = await fetch(this.pag.ruta+this.pag.inicio+'/'+this.pag.fin)
+             res = await fetch(this.pag.ruta+"/"+this.pag.inicio+'/'+this.pag.fin)
           }
           if(tipo == 'down'){
             console.log(tipo)
             this.pag.inicio = this.pag.inicio-20
             this.pag.fin = this.pag.fin-20
-             res = await fetch(this.pag.ruta+ this.pag.inicio +'/'+this.pag.fin)
+             res = await fetch(this.pag.ruta +"/"+ this.pag.inicio +'/'+this.pag.fin)
           }
 
           if(tipo == 'click'){
-            console.log(tipo)
+            console.log(tipo,this.pag.actual)
             this.pag.inicio = (this.pag.actual*20)-20
+            console.log(this.pag)
             this.pag.fin = this.pag.actual*20
-            res = await fetch(this.pag.ruta+ this.pag.inicio +'/'+this.pag.fin)
+            res = await fetch(this.pag.ruta+"/"+ this.pag.inicio +'/'+this.pag.fin)
           }
          
           res = await res.json()
 
-          this.articulos = res
+          this.articulos = res.valor
 
         },
 
@@ -351,6 +356,11 @@ new Vue({
           console.log('inicio')
           this.buscador = ''
           this.banner = true
+          this.pag.ruta = '/producto/list'
+          this.pag.inicio = 0
+          this.pag.fin = 20
+          this.getproducto()
+          return 0;
         }
             let categoria = [];
 console.log(this.buscador.toUpperCase())
@@ -361,19 +371,24 @@ console.log(this.buscador.toUpperCase())
             this.pag.actual = 1
              res = await res.json()
              
-            this.articulos = res
-           
+            this.articulos = res.valor
+            this.pag.cant = res.n
            
         },
        async filtroC(a) {
+     
 
-          let res = await fetch('/producto/list/'+a)
-           
+          let res = await fetch('/producto/list/'+a+'/0/20')
+          this.pag.inicio = 0
+          this.pag.fin = 20
           res = await res.json()
-         
-         this.articulos = res
-
+          this.articulos = []
+         this.articulos = res.valor
+         this.pag.cant =res.n
+         this.pag.ruta = '/producto/list/'+a
+         this.pag.actual = 1
           let categoria = [];
+          
           this.articulos.forEach(element => {
           
             if(element.categoria == a){

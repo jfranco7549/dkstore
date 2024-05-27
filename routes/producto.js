@@ -124,7 +124,7 @@ try{
      
   }
 
-     res.json({list:list,cant:cant})
+     res.json({valor:list,n:cant})
 }catch(err){
   console.log(err)
   res.json({list:[],cant:0})
@@ -141,7 +141,7 @@ try{
           console.log(req.params.inicio,req.params.fin)
           let list = [];
           let val = await  articulo.find({status:true}).skip(req.params.inicio).limit(req.params.fin)
-          let cont = await  articulo.find({status:true}).skip(req.params.inicio).limit(req.params.fin).count()
+          let cont = await  articulo.find({status:true}).count()
           console.log("fueron "+ cont)
           for( let articulo of val ){
             if(articulo.status){
@@ -154,7 +154,7 @@ try{
              
           }
         
-             res.json(list)
+             res.json({valor:list,n:cont})
 
         }catch(err){
           console.log(err)
@@ -170,25 +170,28 @@ try{
                      //descripcion para la busqueda
         /*{descripcion: { $regex: '.*' +  + '.*' } }  */
         let descrip = req.params.desp
-        console.log(descrip)
+        console.log(req.params)
         let list = [];
-      
-        let prod = await  Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' },status:true }).skip(req.params.inicio).limit(req.params.fin)
+      let cand = await Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).count()
+      console.log(cand)
+        let prod = await  Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).skip(req.params.inicio).limit(req.params.fin)
      
         for( let p of prod ){
-          let ar = await  articulo.findOne({sap:p.sap})
+          let ar = await  articulo.findOne({sap:p.sap,status:true})
               
            
            
             if(ar){
               if(ar.status){
-              list.push({sap:ar.sap,categoria:ar.categoria,precio:ar.precio,descripcion:p.descripcion,marca:ar.marca,familia:ar.familia,view:true})
+                list.push({sap:ar.sap,categoria:ar.categoria,precio:ar.precio,descripcion:p.descripcion,marca:ar.marca,familia:ar.familia,view:true})
             }
           }
            
         }
+        
+      
         console.log(list)
-           res.json(list)
+           res.json({valor:list,n:cand})
 
             }catch(err){
               console.log(err,"162")
@@ -203,10 +206,10 @@ try{
           let descrip = req.params.desp
           console.log(descrip)
           let list = [];
-        
+        let cand =   await  articulo.find({familia:descrip,status:true}).count()
           let ar = await  articulo.find({familia:descrip,status:true}).skip(req.params.inicio).limit(req.params.fin)
        console.log(ar)
-          for( let p of ar ){ Producto
+          for( let p of ar ){ 
             let prod = await  Producto.findOne({sap:p.sap})
                 
              
@@ -217,7 +220,7 @@ try{
              
           }
           console.log(list)
-             res.json(list)
+             res.json({valor:list,cand:cand})
   
               }catch(err){
                 console.log(err,"162")
@@ -226,21 +229,24 @@ try{
               })
       
 //194 listado por categoria
-      router.get('/list/:categoria',  async (req,res)=>{
+      router.get('/list/:categoria/:incio/:fin',  async (req,res)=>{
       try{
         let list = [];
-        let val = await  articulo.find({status:true})
+        let cand = await  articulo.find({status:true,categoria:req.params.categoria}).count()
+        let val = await  articulo.find({status:true,categoria:req.params.categoria}).limit(req.params.fin).skip(req.params.inicio)
         for( let articulo of val ){
-          if(articulo.status && articulo.categoria == req.params.categoria){
+        
             let ar = await  Producto.findOne({sap:articulo.sap})
+
             if(ar){
+              
               list.push({sap:articulo.sap,categoria:articulo.categoria,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
             }
-          }
+          
            
         }
           
-           res.json(list)
+           res.json({valor:list,n:cand})
       }catch(err){
         console.log(err,"194")
         res.json({})
