@@ -54,6 +54,7 @@ new Vue({
               
             ],
             comprar:true,
+            titulo:'',
             init:false,
             servicios: [
                 {
@@ -149,10 +150,23 @@ new Vue({
 
             ],
             icons: [
-              'mdi-facebook',
-              'mdi-twitter',
-              'mdi-whatsapp',
-              'mdi-instagram',
+              {
+                url:"https://www.instagram.com/tiendasdaka/",
+                ico:'mdi-instagram',
+              },
+              {
+                url:"https://www.facebook.com/TiendasDakaOficial",
+                ico:'mdi-facebook',
+              },
+              {
+                url:"https://x.com/tiendasdaka?mx=2",
+                ico:'mdi-twitter',
+              },
+              {
+                url:"https://www.tiktok.com/@tiendasdaka",
+                ico:'mdi-music-note',
+              },
+              
             ],
             items: [
                 {
@@ -273,6 +287,7 @@ new Vue({
                     res = await res.json()
                     this.articulos = res.valor
                     this.banner = false;
+                    this.titulo = a;
       },
         async ProductoDestacado(){
           let consul = await fetch('/producto/destacado')
@@ -416,14 +431,14 @@ console.log(this.buscador.toUpperCase())
             this.pag.ruta = '/producto/list_des/'+this.buscador.toUpperCase()
             this.pag.actual = 1
              res = await res.json()
-             
+             this.banner = false
             this.articulos = res.valor
             this.pag.cant = res.n
-           
+            this.titulo = this.buscador;
         },
        async filtroC(a) {
      
-
+        this.banner = false
           let res = await fetch('/producto/list/'+a+'/0/20')
           this.pag.inicio = 0
           this.pag.fin = 20
@@ -449,7 +464,7 @@ console.log(this.buscador.toUpperCase())
         this.menus = categoria
     
           });
-
+          this.titulo =  a;
       },
         RemoveCarrito(articulo) {
             articulo['carrito'] = false;

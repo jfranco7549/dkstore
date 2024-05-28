@@ -396,9 +396,26 @@ body{
                  <v-tab @click="openModal('servicio')">Servicios</v-tab>-->
 
             </v-tabs>
+            
           </template>
+    
 
         </v-app-bar>
+        <v-col v-if="buscador !='' || !banner "   class="bannerAzul"  cols="12" >
+          <v-row>
+            <v-col cols="4" >    <v-btn
+              class="p-4"
+              dark
+              
+              icon
+              
+              @click="filtro('inicio')"
+            >
+              <v-icon>mdi-backspace</v-icon>
+            </v-btn></v-col>   <v-spacer></v-spacer> <v-col cols="4" class="text-center"> {{titulo}} </v-col>      
+          </v-row>
+        
+        </v-col>
      <!--   <v-app-bar v-if="buscador !=''" color="#143E8F" dense dark>
 
 
@@ -576,8 +593,8 @@ body{
                       </v-list-item-group>
                     </v-list>
                   </v-navigation-drawer>
-
-                  <v-col v-if="buscador ==''" cols="12">
+             
+                  <v-col v-if="buscador =='' && banner" cols="12">
                   
                     <v-row>
                       
@@ -595,7 +612,7 @@ body{
                  <v-container>
                   <v-row>
                      
-                    <v-col v-for="Linea of MenuCategoria" id="lateralder" cols="12" xs="6" sm="12" md="12" lg="3" xl="3" >
+                    <v-col  v-if="banner" v-for="Linea of MenuCategoria" id="lateralder" cols="12" xs="6" sm="12" md="12" lg="3" xl="3" >
                       <v-card
                       class="m-auto"
                       outlined
@@ -605,7 +622,7 @@ body{
                     <v-card-title>{{Linea.Nombre}}</v-card-title>
                       <v-container fluid>
                         <v-row dense>
-                          <v-col cols="6"  v-for="articulo of Linea.producto">
+                          <v-col cols="6"   v-for="articulo of Linea.producto">
                             <v-card 
                             @click="openModal('producto',articulo)"
                             elevation="0"
@@ -633,6 +650,7 @@ body{
 
                  </v-container>
                   </v-col>
+                 
                   <v-col   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
                     <v-row>
                       <v-spacer></v-spacer> <v-col class="text-center"> PRODUCTOS DESTACADOS </v-col>      <v-spacer></v-spacer> 
@@ -981,13 +999,15 @@ body{
     >
       <v-card-text>
         <v-btn
-          v-for="icon in icons"
-          :key="icon"
+          v-for="icon of icons"
+          
           class="mx-4 white--text"
           icon
+          Target="_blank"
+          :href="icon.url"
         >
           <v-icon size="24px">
-            {{ icon }}
+            {{ icon.ico }}
           </v-icon>
         </v-btn>
       </v-card-text>
@@ -1017,6 +1037,9 @@ body{
   <script src='./dist/main.js'>
 
   </script>
+  <!-- Start of tiendasdaka6919 Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=eebf7265-cb0a-47a4-9f1b-5d7568e59f24"> </script>
+<!-- End of tiendasdaka6919 Zendesk Widget script -->
 </body>
 
 </html>
