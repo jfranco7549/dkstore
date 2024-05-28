@@ -20,6 +20,11 @@ new Vue({
                 quienes: false,
                 producto:false
             },
+            datosG:{
+              estado:null,
+              municipio:null,
+              parroquia:null,
+            },
             pag:{
               cant:0,
               inicio:0,
@@ -127,6 +132,9 @@ new Vue({
             cliente:{
               nombre:'',
               cedula:'',
+              estado:'',
+              municipio:'',
+              parroquia:'',
               direccion:''
             },
             metodoSelect:'',
@@ -180,6 +188,7 @@ new Vue({
     async mounted() {
         this.ProductoDestacado()
          this.ProductoLinea()
+         this.getstado()
         let that = this;
         
         
@@ -204,9 +213,27 @@ new Vue({
         this.getproducto()
       
     },
-
-
+  
     methods: {
+      async getstado(){
+        let res = await fetch("/direccion/getestado")
+        res = await res.json()
+          this.datosG.estado = res
+      },
+      async  getmunicipio(a){
+          
+          let res = await fetch("/direccion/getmunicipio/"+this.cliente.estado.cod_entidad)
+          res = await res.json()
+         
+          this.datosG.municipio = res 
+      },
+      async getparroquia(a){
+       
+        let res = await fetch("/direccion/getparroquia/"+this.cliente.municipio.cod_mun+"/"+this.cliente.estado.cod_entidad)
+        res = await res.json()
+        console.log(res)
+          this.datosG.parroquia = res
+      },
       setvideo(a){
         this.videoP = a
       },
@@ -311,8 +338,15 @@ new Vue({
         SendWhs() {
      
             let total = 'Hola '+this.cliente.nombre+"%0A%0A Bienvenido(a) a tiendas daka %0A";
-            total += 'Direccion:'+this.cliente.direccion+'%0A';
-            total += 'cedula:'+this.cliente.cedula+'%0A%0A';
+            if(this.metodoSelect == 'Delivery'){
+              total += 'Direccion del Envio : %0A';
+              total += 'Estado:'+this.cliente.estado.nombre+" ,  Municipio:"+this.cliente.municipio.nombre+' , Parroquia:'+this.cliente.parroquia.nombre+'%0A';
+              total += 'Direccion:'+this.cliente.direccion+'%0A';
+            }else{
+              total += 'Tienda a Retirar:'+this.cliente.direccion+'%0A';
+            }
+           
+            total += 'Cedula:'+this.cliente.cedula+'%0A%0A';
             total += 'PRODUCTO %0A';
             
             this.carrito.forEach((item) => {

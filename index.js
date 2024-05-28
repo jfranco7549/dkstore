@@ -32,7 +32,7 @@ const router = express.Router();
 app.use(compression())
 
 app.use('/', require('./routes/socket.js'));
-
+app.use('/direccion', require('./routes/direccion.js'));
 app.use('/producto', require('./routes/producto.js'));
 app.use('/postventa', require('./routes/tc.js'));
 

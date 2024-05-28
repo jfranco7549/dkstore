@@ -536,9 +536,12 @@ body{
                             v-model="metodoSelect"
                             :items="metodos"
                             label="Metodo de entrega"
-                          ></v-select>
+                          ></v-select> 
                             <v-list-item-subtitle v-if="metodoSelect =='Delivery'">
-                               <v-text-field label="Direccion De envio" v-model="cliente.direccion">
+                              <v-select @change="getmunicipio(cliente.estado)" v-model="cliente.estado" :items="datosG.estado" return-object :item-text="'nombre'"  label="Seleccione el Estado"></v-select>
+                              <v-select @change="getparroquia(cliente.municipio)" v-model="cliente.municipio" v-if="cliente.estado"  return-object :items="datosG.municipio" :item-text="'nombre'"   label="Seleccione el Municipio"></v-select>
+                              <v-select v-model="cliente.parroquia" v-if="cliente.municipio"   :items="datosG.parroquia" :item-text="'nombre'" return-object   label="Seleccione la Parroquia"></v-select>
+                               <v-text-field v-if="cliente.parroquia" label="Direccion De envio" v-model="cliente.direccion">
 
                                </v-text-field>
                               </v-list-item-subtitle>
