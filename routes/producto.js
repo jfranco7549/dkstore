@@ -68,16 +68,18 @@ try{
 router.get('/destacado',  async (req,res)=>{
  try{
   let list = [];
-  let val = await  articulo.find({status:true}).limit(4)
+  let val = await  articulo.find({status:true}).limit(4).sort({uv:-1});
   for(let i of val){
-
+console.log(i.sap)
     list.push(i.sap)
     
   }
  
   res.json(list)
  }catch(err){
+  
   console.log(err)
+  res.json([])
  }
 })
 router.get('/lineas/:linea',  async (req,res)=>{

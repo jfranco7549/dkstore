@@ -8,7 +8,8 @@ const articulo = new  Schema({
  marca:String,
  familia:String,
  promo:Boolean,
- categoria:String
+ categoria:String,
+ uv:Number
 })
 
 module.exports = mongoose.model('articulo',articulo,'articulo');
