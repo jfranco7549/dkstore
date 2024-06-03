@@ -65,6 +65,9 @@ body{
       color: #ffffff;
 
     }
+    .fondoscuro{
+      background-color:#fcfcfc;
+    }
     .modal3{
       overflow: hidden;
     }
@@ -521,7 +524,7 @@ body{
                               <h5 class="bluDaka">  Total</h5>
                           </v-col>
                           <v-col>
-                            <h3 class="bluDaka">{{totalCarro+"$"}} </h3>
+                            <h3 class="bluDaka">{{Math.round(totalCarro)+"$"}} </h3>
                           </v-col>
                           <v-spacer></v-spacer>
                         </v-row>
@@ -605,7 +608,7 @@ body{
                     </v-list>
                   </v-navigation-drawer>
              
-                  <v-col v-if="buscador =='' && banner" cols="12">
+                  <v-col class="fondoscuro" v-if="buscador =='' && banner" cols="12">
                   
                     <v-row>
                       
@@ -619,7 +622,7 @@ body{
                     </v-row>
                   
                   </v-col>
-                  <v-col class="p-2" v-if="buscador ==''"   cols="12" >
+                  <v-col class="p-2 fondoscuro" v-if="buscador ==''"   cols="12" >
                  <v-container>
                   <v-row>
                      
@@ -662,24 +665,25 @@ body{
                  </v-container>
                   </v-col>
                  
-                  <v-col   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
+                  <v-col class="fondoscuro"   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
                     <v-row>
-                      <v-spacer></v-spacer> <v-col class="text-center"> PRODUCTOS DESTACADOS </v-col>      <v-spacer></v-spacer> 
+                      <v-spacer></v-spacer> <v-col  class="text-center"> PRODUCTOS DESTACADOS </v-col>      <v-spacer></v-spacer> 
                     </v-row>
                   
                   </v-col>
-                  <v-col  v-if="buscador =='' && banner " cols="12">
+                  <v-col  class="fondoscuro" v-if="buscador =='' && banner " cols="12">
                     <v-row>
                       <v-spacer></v-spacer>
-                      <v-col>
+                      <v-col class="fondoscuro" >
                         <v-sheet>
                           <v-slide-group
                             
-                            class="pa-4"
+                            class="pa-4 fondoscuro"
                           
                             show-arrows
                           >
                             <v-slide-item
+                            
                               v-for="n in Pdestacado"
                               :key="n"
                               v-slot="{active,toggle}"
@@ -711,10 +715,10 @@ body{
                     </v-row>
                     
                   </v-col>
-                  <v-col  cols="12">
+                  <v-col  class="fondoscuro"  cols="12">
                     <v-row>
 
-                      <v-col cols="12">
+                      <v-col class="fondoscuro" cols="12">
                         
                         <v-dialog   max-width="800" class=" modal3"  persistent v-model="modal.producto" transition="dialog-bottom-transition">
                           
@@ -796,7 +800,7 @@ body{
                                   <v-col class="bannerCard" cols="12">
                                     <v-row>
                                       <v-col>
-                                        <h3 class="bluDaka">{{modelProd.precio}}$</h3>
+                                        <h3 class="bluDaka">{{Math.round(modelProd.precio)}}$</h3>
                                         
                                       </v-col>
                                       <v-spacer></v-spacer>
@@ -972,7 +976,7 @@ body{
                 </v-row>
 
                 </v-card>
-                <v-col cols="12">
+                <v-col class="fondoscuro" cols="12">
                   <template>
                     <div class="text-center">
                       <v-pagination
@@ -995,7 +999,7 @@ body{
 
 
 
-<v-col cols="12">
+<v-col class="fondoscuro"  cols="12">
  <v-footer
     dark
     padless
