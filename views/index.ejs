@@ -929,11 +929,11 @@ body{
                            <v-container>
                           <v-row>
                             <v-spacer></v-spacer>
-                            <v-col>
+                            <v-col>989
                               <v-card width="300" >
-
+                                  <!-- @error="articulo.view=false" -->
                                
-                                <v-img  @error="articulo.view=false" @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.jpg'">
+                                <v-img     @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.jpg'">
                                  
                                   <v-img width="400"  height="200" contain   v-if="articulo.promo" src="img/banner/promoM.png" >
                                   </v-img>
