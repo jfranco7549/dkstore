@@ -142,8 +142,8 @@ new Vue({
             banner:true,
             modelProd:null,
             metodos: ["Delivery","Retiro En tienda"],
-            tiendas: ['Agencia Valencia',"Agencia Valencia Centro", "agencia San Diego","agencia puerto la cruz", "agencia porlamar","agencia Maracay","agencia MAracay Centro","agencia yaracuy"],
-            tileLayer: null,
+            tiendas:[],
+              tileLayer: null,
             layers: [],
             carrito: [],
             menus: [
@@ -202,6 +202,7 @@ new Vue({
     async mounted() {
         this.ProductoDestacado()
          this.ProductoLinea()
+         this.getTiendas()
          this.getstado()
         let that = this;
         
@@ -234,6 +235,16 @@ new Vue({
         res = await res.json()
           this.datosG.estado = res
       },
+      async getTiendas(){
+        let res = await fetch("/direccion/gettienda")
+        res = await res.json()
+       
+        for(let tienda of res){
+          this.tiendas.push(tienda.nombre)
+        }
+        
+          
+      },
       async  getmunicipio(a){
           
           let res = await fetch("/direccion/getmunicipio/"+this.cliente.estado.cod_entidad)
@@ -245,7 +256,7 @@ new Vue({
        
         let res = await fetch("/direccion/getparroquia/"+this.cliente.municipio.cod_mun+"/"+this.cliente.estado.cod_entidad)
         res = await res.json()
-        console.log(res)
+       
           this.datosG.parroquia = res
       },
       setvideo(a){
@@ -293,7 +304,7 @@ new Vue({
         async ProductoDestacado(){
           let consul = await fetch('/producto/destacado')
           consul = await consul.json()
-          console.log(consul)
+          
           this.Pdestacado = await  consul
          },
 
@@ -304,7 +315,7 @@ new Vue({
           consul = await consul.json()
           res = await consul
           this.MenuCategoria[linea].producto = res
-         console.log(res)
+        
   
           }
          
@@ -331,18 +342,18 @@ new Vue({
                 let p = await fetch('/producto/getproducto/' + b)
     
                 p = await p.json()
-                console.log(p)
+               
                 b = p
               }
              
               this.modelProd = b
               let res = await fetch('/producto/caracterisctica/'+b.sap)
               res = await res.json()
-              console.log(res)
+              
               this.modelProd['caracteristica'] = res.valor
               this.categoriaico = res.ico
               this.modal.producto = true
-              console.log(this.categoriaico)
+             
           }
         },
         colorPromo(a) {
@@ -387,22 +398,22 @@ new Vue({
 
           let res 
           if(tipo == 'up'){
-            console.log(tipo)
+           
             this.pag.inicio = this.pag.inicio+20
             this.pag.fin = this.pag.fin+20
              res = await fetch(this.pag.ruta+"/"+this.pag.inicio+'/'+this.pag.fin)
           }
           if(tipo == 'down'){
-            console.log(tipo)
+            
             this.pag.inicio = this.pag.inicio-20
             this.pag.fin = this.pag.fin-20
              res = await fetch(this.pag.ruta +"/"+ this.pag.inicio +'/'+this.pag.fin)
           }
 
           if(tipo == 'click'){
-            console.log(tipo,this.pag.actual)
+      
             this.pag.inicio = (this.pag.actual*20)-20
-            console.log(this.pag)
+          
             this.pag.fin = this.pag.actual*20
             res = await fetch(this.pag.ruta+"/"+ this.pag.inicio +'/'+this.pag.fin)
           }
@@ -415,7 +426,7 @@ new Vue({
 
        async filtro(a) {
         if(a == 'inicio'){
-          console.log('inicio')
+         
           this.buscador = ''
           this.banner = true
           this.pag.ruta = '/producto/list'
@@ -426,7 +437,7 @@ new Vue({
           return 0;
         }
             let categoria = [];
-console.log(this.buscador.toUpperCase())
+
             let res = await fetch('/producto/list_des/'+this.buscador.toUpperCase()+'/0/20')
             this.pag.inicio = 0
             this.pag.fin = 20
@@ -455,8 +466,7 @@ console.log(this.buscador.toUpperCase())
           this.articulos.forEach(element => {
           
             if(element.categoria == a){
-               console.log(element)
-               console.log(categoria)
+             
               element.view = true; 
               categoria.push(element)
             }else {
@@ -476,7 +486,7 @@ console.log(this.buscador.toUpperCase())
                 return;
             }
             this.carrito.splice(index, index);
-            console.log(index)
+          
         },
         addCarrito(articulo) {
             articulo['carrito'] = true;

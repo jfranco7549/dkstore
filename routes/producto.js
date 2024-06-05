@@ -13,7 +13,7 @@ router.get('/marca',  async (req,res)=>{
   try{
     let list = [];
     let val = await  Marca.find()
-    console.log(val[45])
+    
     res.json(val)
 
   }catch(err){
@@ -25,17 +25,17 @@ router.get('/caracterisctica/:sap',  async (req,res)=>{
 try{
 
   let list = [];
-  console.log(req.params.sap)
+  
   let val = await  caracteristica.find({q:req.params.sap})
   let ico = {}
-  console.log(val)
+  
   for( let caracteristicas of val){
 
     
     let val2 = await  categoria.findOne({atributo:caracteristicas.atributo})
     
     if(val2){
-      console.log(val2.icono)
+     
       ico[caracteristicas.atributo] = val2.icono
      
      
@@ -47,7 +47,7 @@ try{
 
   }
   
-  console.log(ico)
+  
   res.json({"valor":val,"ico":ico})
 
 }catch(err){
@@ -59,7 +59,7 @@ router.get('/categoria/:atributo',  async (req,res)=>{
 try{
   let list = [];
   let val = await  categoria.findOne({atributo:req.params.atributo})
-  console.log(val)
+  
   res.json(val)
 }catch(err){
   res.json({})
@@ -70,7 +70,7 @@ router.get('/destacado',  async (req,res)=>{
   let list = [];
   let val = await  articulo.find({status:true}).limit(4).sort({uv:-1});
   for(let i of val){
-console.log(i.sap)
+
     list.push(i.sap)
     
   }
@@ -89,8 +89,7 @@ router.get('/lineas/:linea',  async (req,res)=>{
 
   cant = cant - 4
   cant = Math.round(Math.random() * cant)
-  console.log(cant)
-  console.log(cant+4)
+
   let val = await  articulo.find({familia:req.params.linea,status:true}).skip(cant).limit(4)
   
   for(let i of val){
@@ -98,7 +97,7 @@ router.get('/lineas/:linea',  async (req,res)=>{
     list.push(i.sap)
     
   }
-  console.log(list,req.params.linea)
+ 
   res.json(list)
 
   }catch(err){
@@ -128,7 +127,7 @@ try{
 
      res.json({valor:list,n:cant})
 }catch(err){
-  console.log(err)
+ 
   res.json({list:[],cant:0})
 }
       })
@@ -140,11 +139,11 @@ try{
           if(req.params.fin < 0){
             req.params.fin = 0
           }
-          console.log(req.params.inicio,req.params.fin)
+          
           let list = [];
           let val = await  articulo.find({status:true,promo:true}).skip(req.params.inicio).limit(req.params.fin)
           let cont = await  articulo.find({status:true,promo:true}).count()
-          console.log("fueron "+ cont)
+         
           for( let articulo of val ){
             if(articulo.status){
               let ar = await  Producto.findOne({sap:articulo.sap})
@@ -172,11 +171,11 @@ try{
           if(req.params.fin < 0){
             req.params.fin = 0
           }
-          console.log(req.params.inicio,req.params.fin)
+         
           let list = [];
           let val = await  articulo.find({status:true}).skip(req.params.inicio).limit(req.params.fin)
           let cont = await  articulo.find({status:true}).count()
-          console.log("fueron "+ cont)
+ 
           for( let articulo of val ){
             if(articulo.status){
               let ar = await  Producto.findOne({sap:articulo.sap})
@@ -204,10 +203,10 @@ try{
                      //descripcion para la busqueda
         /*{descripcion: { $regex: '.*' +  + '.*' } }  */
         let descrip = req.params.desp
-        console.log(req.params)
+       
         let list = [];
       let cand = await Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).count()
-      console.log(cand)
+      
         let prod = await  Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).skip(req.params.inicio).limit(req.params.fin)
      
         for( let p of prod ){
@@ -224,7 +223,7 @@ try{
         }
         
       
-        console.log(list)
+        
            res.json({valor:list,n:cand})
 
             }catch(err){
@@ -238,11 +237,11 @@ try{
                        //descripcion para la busqueda
           /*{descripcion: { $regex: '.*' +  + '.*' } }  */
           let descrip = req.params.desp
-          console.log(descrip)
+          
           let list = [];
         let cand =   await  articulo.find({familia:descrip,status:true}).count()
           let ar = await  articulo.find({familia:descrip,status:true}).skip(req.params.inicio).limit(req.params.fin)
-       console.log(ar)
+      
           for( let p of ar ){ 
             let prod = await  Producto.findOne({sap:p.sap})
                 
@@ -253,7 +252,7 @@ try{
             }
              
           }
-          console.log(list)
+         
              res.json({valor:list,cand:cand})
   
               }catch(err){
@@ -313,11 +312,11 @@ try{
 //237 optiene informacion del [producto ]
 router.get('/getproducto/:sap',  async (req,res)=>{
 try{
-  console.log(req.params.sap)
+
   let articulos = await  articulo.findOne({sap:req.params.sap})
-  console.log(articulos)
+ 
   let ar = await  Producto.findOne({sap:req.params.sap})
-  console.log(ar)
+  
      res.json({sap:articulos.sap,categoria:articulos.categoria,precio:articulos.precio,promo:articulo.promo,descripcion:ar.descripcion,marca:articulos.marca,familia:articulos.familia,view:true})
     
 }catch(err){
