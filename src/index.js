@@ -420,6 +420,7 @@ new Vue({
           this.pag.ruta = '/producto/list'
           this.pag.inicio = 0
           this.pag.fin = 20
+          this.pag.actual = 1
           this.getproducto()
           return 0;
         }
