@@ -340,7 +340,7 @@ body{
   <div id="loads" class="invertDaka load">
 
     <div class="preloader">
-      <img class="cart daki" src="/img/daki/daki-min.png"  width="400px"      height="400px" />
+      <img class="cart daki" src="/img/daki/daki-min.webp"  width="400px"      height="400px" />
       <div class="preloader__text">
         <h2>Iniciando</h2>
        
@@ -355,7 +355,7 @@ body{
         <v-app-bar absolute   height='60' style="position: sticky;touch-action: none;" dense  color="#FFDD00" >
 
           <v-app-bar-title  @click="filtro('inicio')" class="pt-4 m-2" >
-            <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="img/logoF.png"></v-img>
+            <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="img/logoF.webp"></v-img>
           </v-app-bar-title>
        
                <v-spacer></v-spacer>
@@ -514,7 +514,7 @@ body{
 
                         <v-list-item v-for="articulo of carrito">
                           <v-list-item-avatar>
-                            <v-img :src="'img/producto/'+articulo.sap+'.jpg'"></v-img>
+                            <v-img :src="'img/producto/'+articulo.sap+'.webp'"></v-img>
                           </v-list-item-avatar>
 
                           <v-list-item-content>
@@ -624,7 +624,7 @@ body{
                       
                       <v-col cols="12">
                         
-                        <v-img src="/img/banner/banner.jpg"></v-img>
+                        <v-img src="/img/banner/banner.webp"></v-img>
     
                       </v-col>
                   
@@ -653,7 +653,7 @@ body{
                              height="150"
                             width="125">
                             
-                           <v-img  xa contain :src="'/img/producto/'+articulo+'.jpg'"></v-img>
+                           <v-img  xa contain :src="'/img/producto/'+articulo+'.webp'"></v-img>
                             </v-card>
                           </v-col>
                          
@@ -712,7 +712,7 @@ body{
                                 >
                                           <v-col cols="12">
                                         
-                                            <v-img @click="openModal('producto',n)" xa contain :src="'/img/producto/'+n+'.jpg'"></v-img>
+                                            <v-img @click="openModal('producto',n)" xa contain :src="'/img/producto/'+n+'.webp'"></v-img>
                                           </v-col>
                                 </v-row>
                               </v-card>
@@ -740,8 +740,8 @@ body{
                                 <v-row>
                                   <v-col   xs="6" sm="6" cols="12">
                                     <v-card   width="100%" height="100%" color="#FFFFFF" >
-                                       <v-img class="imgcard"  width="400"   contain  :src="'img/producto/'+modelProd.sap+'.jpg'">
-                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.promo" src="img/banner/promoM.png" ></v-img>
+                                       <v-img class="imgcard"  width="400"   contain  :src="'img/producto/'+modelProd.sap+'.webp'">
+                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.promo" src="img/banner/promoM.webp" ></v-img>
     
                                     </v-img>
                                     </v-card>
@@ -881,14 +881,7 @@ body{
 
                               <div id="map" class="map">
                                 <v-card id="popup">
-                                  <v-img
-                                    src="https://fastly.4sqi.net/img/general/200x200/n00MvB_u5Kn2QW_qAIcDMnrsNekBFiw4mSEKLvaWFDA.jpg"
-                                    class="white--text align-end"
-                                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                    height="3rem"
-                                  >
-                                    <v-card-title >Naguanagua</v-card-title>
-                                  </v-img>
+                               
                       
                                   <v-card-actions>
                                     <v-spacer></v-spacer>
@@ -933,9 +926,9 @@ body{
                               <v-card width="300" >
                                   <!-- @error="articulo.view=false" -->
                                
-                                <v-img     @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.jpg'">
+                                <v-img     @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.webp'">
                                  
-                                  <v-img width="400"  height="200" contain   v-if="articulo.promo" src="img/banner/promoM.png" >
+                                  <v-img width="400"  height="200" contain   v-if="articulo.promo" src="img/banner/promoM.webp" >
                                   </v-img>
                                   
 
