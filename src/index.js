@@ -286,6 +286,7 @@ new Vue({
                     this.pag.actual = 1
                     res = await res.json()
                     this.articulos = res.valor
+                    this.pag.cant = res.cand
                     this.banner = false;
                     this.titulo = a;
       },
