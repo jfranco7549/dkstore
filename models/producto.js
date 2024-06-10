@@ -4,6 +4,8 @@ const { Schema } = mongoose;
 const producto = new  Schema({
     
  meleid:Number,
+ 
+ status:Boolean,
 
  sap:String,
 

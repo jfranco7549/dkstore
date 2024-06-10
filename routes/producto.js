@@ -86,7 +86,7 @@ router.get('/lineas/:linea',  async (req,res)=>{
   try{
     let list = [];
   let cant  =  await  articulo.find({familia:req.params.linea,status:true}).count()
-
+console.log(req.params.linea,cant)
   cant = cant - 4
   cant = Math.round(Math.random() * cant)
 
@@ -205,11 +205,12 @@ try{
         let descrip = req.params.desp
        
         let list = [];
-      let cand = await Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).count()
+      let cand = await Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' },status:true }).count()
       
-        let prod = await  Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' } }).skip(req.params.inicio).limit(req.params.fin)
+        let prod = await  Producto.find( {descripcion: { $regex: '.*' + descrip + '.*' },status:true  }).skip(req.params.inicio).limit(req.params.fin)
      
         for( let p of prod ){
+
           let ar = await  articulo.findOne({sap:p.sap,status:true})
               
            
