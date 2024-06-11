@@ -394,8 +394,8 @@ body{
 
             <v-tabs background-color="#FFFF" align-with-title>
 
-              <v-tab @click="filtro('inicio')">Inicio</v-tab>
-              <v-tab @click="getpromo()">Promociones</v-tab>
+              <v-tab @click="filtro('inicio')">  <h2 class="subtitle-2"> Inicio</h2></v-tab>
+              <v-tab @click="getpromo()"> <h2 class="subtitle-2"> Promociones</h2></v-tab>
             
              <v-tab>
               <v-menu  offset-y>
@@ -416,7 +416,7 @@ body{
                     :key="index"
                     style="background-color: #ffffff;"
                   >
-                    <v-list-item-title  @change="filtroC()"> <v-btn text @click="filtroC(item)">{{ item }}</v-btn></v-list-item-title>
+                    <v-list-item-title  @change="filtroC()"> <v-btn text @click="filtroC(item)"> <h2 class="subtitle-2"> {{ item }}</h2></v-btn></v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -431,8 +431,8 @@ body{
 
            <!--  <v-combobox :items="categoria"></v-combobox>  <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
           </v-tab>
-            <!--
-               <v-tab @click="openModal('quienes')">Ubicanos </v-tab>
+           
+               <v-tab @click="openModal('quienes')"> <h2 class="subtitle-1"> Tiendas cerca de ti</h2> </v-tab> <!--
                  <v-tab @click="openModal('servicio')">Servicios</v-tab>-->
 
             </v-tabs>
@@ -887,40 +887,55 @@ body{
                         </v-dialog>
 
 
-                        <v-dialog persistent v-model="modal.quienes" transition="dialog-bottom-transition"
+                        <v-dialog persistent  scrollable v-model="modal.quienes" transition="dialog-bottom-transition"
                           max-width="600">
 
                           <template v-slot:default="dialog">
                             <v-card>
-                              <v-toolbar color="#143E8F" dark>Ubicanos</v-toolbar>
-                              <v-card-text>
+                              <v-toolbar color="#143E8F" dark><h3>Nuestras tiendas </h3></v-toolbar>
+                              <v-card-text style="height: 40vh;">
 
-                              <div id="map" class="map">
-                                <v-card id="popup">
-                               
-                      
-                                  <v-card-actions>
-                                    <v-spacer></v-spacer>
-                      
-                                    <v-btn icon>
-                                      <v-icon>mdi-heart</v-icon>
-                                    </v-btn>
-                      
-                                    <v-btn icon>
-                                      <v-icon>mdi-bookmark</v-icon>
-                                    </v-btn>
-                      
-                                    <v-btn icon>
-                                      <v-icon>mdi-share-variant</v-icon>
-                                    </v-btn>
-                                  </v-card-actions>
-                                </v-card>
-                              </div>
+                                <v-row>
+                                  <v-col cols="12"   class="ma-2" v-for="tienda of dirtienda">
+                                    <v-card  shaped
+                                    tile>
+                                    
+                                   
+                                      <v-card-actions class="justify-end">
+                                        <v-row>
+                                          <v-col cols="4">
+                                            <h3 class="p-2">    {{tienda.nombre}}</h3>
+                                          </v-col  >
+                                          <v-col cols="6" >
+                                            <p class="p-2" >{{tienda.direccion}}</p>
+                                          </v-col >
+                                          <v-col  cols="2">
+                                            <v-btn
+                                        Target="_blank" :href="tienda.ubicacion"
+                                        class="ma-2"
+                                        outlined
+                                        
+                                        fab
+                                        color="indigo"
+                                      >
+                                        <v-icon>mdi-map-search</v-icon>
+                                      </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      
+                                       
+                                        
+                                        
+                                     
+                                      </v-card-actions>
+                                    </v-card>
+                                  </v-col>
+                                </v-row>
 
-                              <div id="info"></div>
                               </v-card-text>
+                             
                               <v-card-actions class="justify-end">
-                                <v-btn text @click="modal.quienes = false">Close</v-btn>
+                                <v-btn text @click="modal.quienes = false">Cerrar</v-btn>
                               </v-card-actions>
                             </v-card>
                           </template>

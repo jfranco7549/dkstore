@@ -86,7 +86,7 @@ router.get('/lineas/:linea',  async (req,res)=>{
   try{
     let list = [];
   let cant  =  await  articulo.find({familia:req.params.linea,status:true}).count()
-console.log(req.params.linea,cant)
+
   cant = cant - 4
   cant = Math.round(Math.random() * cant)
 

@@ -140,6 +140,7 @@ new Vue({
             },
             metodoSelect:'',
             banner:true,
+            dirtienda:[],
             modelProd:null,
             metodos: ["Delivery","Retiro En tienda"],
             tiendas:[],
@@ -238,7 +239,7 @@ new Vue({
       async getTiendas(){
         let res = await fetch("/direccion/gettienda")
         res = await res.json()
-       
+       this.dirtienda = res;
         for(let tienda of res){
           this.tiendas.push(tienda.nombre)
         }
