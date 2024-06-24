@@ -233,11 +233,11 @@ new Vue({
     },
   
     methods: {
-      preload(a){
+     async preload(a){
    if(a == 'promociones'){
     if(this.stop){
       this.pag.cant = 20
-      this.getpromo()
+       await this.getpromo()
       this.stop = false
     }
      
