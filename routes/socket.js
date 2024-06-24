@@ -16,9 +16,22 @@ router.get('/c2p',  async (req,res)=>{
 router.get('/',  async (req,res)=>{
   valor = valor+1
   console.log("intervalo"+valor)
-  res.render('index')
+  res.render('index',{menu:''})
   //res.redirect('index.html')
      })
     
+router.get('/menu/:tipo',  async (req,res)=>{
+      valor = valor+1
+      console.log("intervalo"+valor)
+      if(req.params.tipo == 'promociones'){
+        res.render('index',{menu:'promociones'})
+      }else{
+        res.render('index',{menu:''})
+      }
+    
+      //res.redirect('index.html')
+         })
+
+        
 
 module.exports = router;

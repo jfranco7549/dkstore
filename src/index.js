@@ -59,22 +59,22 @@ new Vue({
             servicios: [
                 {
                     nombre: "Instalacion",
-                    url:"video/intalacion.mp4",
+                    url:"../video/intalacion.mp4",
                     ico:"mdi-tools"
                 },
                 {
                     nombre: " Servicio Tecnico",
-                    url:"video/gg.mp4",
+                    url:"../video/gg.mp4",
                     ico:"mdi-cube-send"
                 },
                 {
                     nombre: "Garantia",
-                    url:"video/garantia.mp4",
+                    url:"../video/garantia.mp4",
                     ico:"mdi-ballot-recount"
                 },
                 {
                     nombre: "Envio Gratis",
-                    url:"video/envio.mp4",
+                    url:"../video/envio.mp4",
                     ico:"mdi-van-utility"
                 }
             ],
@@ -183,6 +183,7 @@ new Vue({
 
             ],
             articulos: [],
+            stop:true,
             categoriaico:{},
             buscador: '',
             drawer: false,
@@ -199,6 +200,7 @@ new Vue({
         }
 
     },
+   
 
     async mounted() {
         this.ProductoDestacado()
@@ -231,6 +233,16 @@ new Vue({
     },
   
     methods: {
+      preload(a){
+   if(a == 'promociones'){
+    if(this.stop){
+      this.pag.cant = 20
+      this.getpromo()
+      this.stop = false
+    }
+     
+   }
+      },
       async getstado(){
         let res = await fetch("/direccion/getestado")
         res = await res.json()
@@ -267,12 +279,19 @@ new Vue({
 
         let res = await fetch('/producto/promo/0/20')
         res = await res.json()
-        this.pag.ruta = "/producto/promo/0/20"
+        this.pag.ruta = "/producto/promo"
+        this.pag.inicio = 0
+        this.pag.fin = 20
+        
+        this.pag.actual = 1
         this.articulos = res.valor
         let cant = res.n
         if(cant == 0 ){
           cant = 1;
         }
+       
+        this.banner = false;
+        this.titulo = "Promociones";
         this.pag.cant = cant
       },
       async getproducto(){

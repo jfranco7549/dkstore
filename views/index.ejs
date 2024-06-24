@@ -4,11 +4,11 @@
 <head>
   <!-- Google Tag Manager -->
   <!-- Google tag (gtag.js) -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/img/icondk/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/img/icondk/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/icondk/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/icondk/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/icondk/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../img/icondk/favicon-16x16.png">
  
-  <link rel="mask-icon" href="/img/icondk/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../img/icondk/safari-pinned-tab.svg" color="#5bbad5">
  
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -343,7 +343,7 @@ body{
   </style>
 
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="vuetify.min.css" rel="stylesheet">
+  <link href="../vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
@@ -356,7 +356,7 @@ body{
   <div id="loads" class="invertDaka load">
 
     <div class="preloader">
-      <img class="cart daki" src="/img/daki/daki-min.webp"  width="400px"      height="400px" />
+      <img class="cart daki" src="../img/daki/daki-min.webp"  width="400px"      height="400px" />
       <div class="preloader__text">
         <h2>Iniciando</h2>
        
@@ -371,7 +371,7 @@ body{
         <v-app-bar absolute   height='60' style="position: sticky;touch-action: none;" dense  color="#FFDD00" >
 
           <v-app-bar-title  @click="filtro('inicio')" class="pt-4 m-2" >
-            <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="img/logoF.webp"></v-img>
+            <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="../img/logoF.webp"></v-img>
           </v-app-bar-title>
        
                <v-spacer></v-spacer>
@@ -530,7 +530,7 @@ body{
 
                         <v-list-item v-for="articulo of carrito">
                           <v-list-item-avatar>
-                            <v-img :src="'img/producto/'+articulo.sap+'.webp'"></v-img>
+                            <v-img :src="'../img/producto/'+articulo.sap+'.webp'"></v-img>
                           </v-list-item-avatar>
 
                           <v-list-item-content>
@@ -640,7 +640,7 @@ body{
                       
                       <v-col cols="12">
                         
-                        <v-img src="/img/banner/banner.webp"></v-img>
+                        <v-img src="../img/banner/banner.webp"></v-img>
     
                       </v-col>
                   
@@ -669,7 +669,7 @@ body{
                              height="150"
                             width="125">
                             
-                           <v-img  xa contain :src="'/img/producto/'+articulo+'.webp'"></v-img>
+                           <v-img  xa contain :src="'../img/producto/'+articulo+'.webp'"></v-img>
                             </v-card>
                           </v-col>
                          
@@ -728,7 +728,7 @@ body{
                                 >
                                           <v-col cols="12">
                                         
-                                            <v-img @click="openModal('producto',n)" xa contain :src="'/img/producto/'+n+'.webp'"></v-img>
+                                            <v-img @click="openModal('producto',n)" xa contain :src="'../img/producto/'+n+'.webp'"></v-img>
                                           </v-col>
                                 </v-row>
                               </v-card>
@@ -756,8 +756,8 @@ body{
                                 <v-row>
                                   <v-col   xs="6" sm="6" cols="12">
                                     <v-card   width="100%" height="100%" color="#FFFFFF" >
-                                       <v-img class="imgcard"  width="400"   contain  :src="'img/producto/'+modelProd.sap+'.webp'">
-                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.promo" src="img/banner/promoM.webp" ></v-img>
+                                       <v-img class="imgcard"  width="400"   contain  :src="'../img/producto/'+modelProd.sap+'.webp'">
+                                       <v-img  class="imgcard" width="400"   contain   v-if="modelProd.promo" src="../img/banner/promoM.webp" ></v-img>
     
                                     </v-img>
                                     </v-card>
@@ -957,9 +957,9 @@ body{
                               <v-card width="300" >
                                   <!-- @error="articulo.view=false" -->
                                
-                                <v-img     @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'img/producto/'+articulo.sap+'.webp'">
+                                <v-img     @click="openModal('producto',articulo)" width="300"  height="200" contain  :src="'../img/producto/'+articulo.sap+'.webp'">
                                  
-                                  <v-img width="400"  height="200" contain   v-if="articulo.promo" src="img/banner/promoM.webp" >
+                                  <v-img width="400"  height="200" contain   v-if="articulo.promo" src="../img/banner/promoM.webp" >
                                   </v-img>
                                   
 
@@ -1076,6 +1076,7 @@ body{
             </v-row>
           
         </v-sheet>
+    {{preload('<%-menu-%>')}}
       </v-main>
     </v-app>
   </div>
@@ -1083,7 +1084,7 @@ body{
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
 
-  <script src='./dist/main.js'>
+  <script src='../dist/main.js'>
 
   </script>
   <!-- Start of tiendasdaka6919 Zendesk Widget script -->
