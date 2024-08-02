@@ -92,7 +92,8 @@ body{
 
     }
     .fondoscuro{
-      background-color:#fcfcfc;
+      background-color:#f7f5f5fc;
+      
     }
     .modal3{
       overflow: hidden;
@@ -166,6 +167,9 @@ body{
       margin-left: auto;
   margin-right: auto;
 
+    }
+    .espacioinicio{
+      padding-top: 18rem;
     }
 
     .preloader {
@@ -305,8 +309,18 @@ body{
 		transform: translateY(0);
 	}
 }
+@media (height >= 1400px) {
+ .carrusel23{
+  height:500px;
+  }
+}
 
 @media (width <= 1400px) {
+ 
+  .espacioinicio{
+    padding-top: 10rem;
+  }
+
   .nav43{
     height: 38vh;
   }
@@ -323,6 +337,7 @@ body{
 
 }
 @media (width <= 750px) {
+ 
   .imgcard{
     height: 30vh;
     width: 15vw;
@@ -374,12 +389,12 @@ body{
             <v-img   width="80"   @click="filtro('inicio')" class="mb-4 m-2 p-4"  src="../img/logoF.webp"></v-img>
           </v-app-bar-title>
        
-               <v-spacer></v-spacer>
+              
           
-          <v-text-field class="pt-9 p-4 mb-4 buscador rounded-xxl"    flat dense   outlined  filled v-model="buscador" @keyup="filtro()"   append-icon="mdi-magnify">
+          <v-text-field style="margin-left: 5rem; margin-right: 5rem; color: #f3f3f3;" color="white" class="pt-9 p-4 mb-4 buscador rounded-lg"    flat dense   solo   filled v-model="buscador" @keyup="filtro()"   append-icon="mdi-magnify">
           </v-text-field>
          
-          <v-spacer></v-spacer>
+         
 
           <v-btn @click.stop="drawer = !drawer" icon>
             <v-badge :value="carrito.length > 0" overlap color="#192b55" :content="carrito.length">
@@ -387,17 +402,16 @@ body{
             </v-badge>
           </v-btn>
 
-
-
+          
 
           <template v-slot:extension>
 
             <v-tabs background-color="#FFFF" align-with-title>
 
-              <v-tab @click="filtro('inicio')">  <h2 class="subtitle-2"> Inicio</h2></v-tab>
+              <v-tab @click="filtro('inicio')">  <h2 class="subtitle-2"> Categorías</h2></v-tab>
               <v-tab @click="getpromo()"> <h2 class="subtitle-2"> Promociones</h2></v-tab>
-            
-             <v-tab>
+              <v-tab @click="openModal('quienes')"> Acerca de nosotros</v-tab>
+             <!--<v-tab>
               <v-menu  offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -422,21 +436,19 @@ body{
               </v-menu>
             
              
-            </v-tab>
-            <v-tab>
-             
-            </v-tab>
+            </v-tab>  -->
+           
             <v-spacer></v-spacer>
           <v-tab>
 
            <!--  <v-combobox :items="categoria"></v-combobox>  <v-btn @click="openModal('servicio')"   color="#192b55" text>Acerca de nosotros</v-btn> -->
           </v-tab>
-           
-               <v-tab @click="openModal('quienes')"> <h2 class="subtitle-1"> Tiendas cerca de ti</h2> </v-tab> <!--
+           <!--@click="openModal('quienes')"-->
+               <v-tab  > <h3  class="subtitle-1 bluDaka font-weight-black"> Contáctanos</h3> </v-tab> <!--
                  <v-tab @click="openModal('servicio')">Servicios</v-tab>-->
 
             </v-tabs>
-            
+          
           </template>
     
 
@@ -640,7 +652,57 @@ body{
                       
                       <v-col cols="12">
                         
-                        <v-img src="../img/banner/banner.webp"></v-img>
+                        <v-img position='top' contain :src="'../img/banner/banner/B'+ Math.round(Math.random(5))+'.webp'">
+                          <v-container >
+                            <v-row  class="espacioinicio">
+                               <v-spacer></v-spacer>
+                              <v-col  v-if="banner" v-for="Linea of MenuCategoria" id="lateralder" cols="12" xs="6" sm="12" md="12" lg="3" xl="3" >
+                                <v-card
+                                style="border-radius: 40px;"
+                               
+                                class="m-auto rounded-lg"
+                                outlined
+                                tile
+                               
+                                width="500"
+                              >
+                             
+                              <h5 style="padding-top: 10px;padding-left: 7px;">{{Linea.titulo}}</h5>
+                              
+                             
+                                  <v-row style="padding: 10px;" >
+                                    <v-col cols="12">
+                                      <v-img  @click="Getlinea(Linea.Nombre)" class="rounded-lg"  :src="'../img/linea/'+Linea.titulo+'.png'"></v-img>
+                                    </v-col>
+                                    <v-col cols="4"   v-for="articulo of Linea.producto">
+                                      <v-card 
+                                      @click="openModal('producto',articulo)"
+                                      elevation="1"
+                                       >
+                                      
+                                     <v-img   contain :src="'../img/producto/'+articulo+'.webp'"></v-img>
+                                      </v-card>
+                                    </v-col>
+                                   
+                                  </v-row>
+                                
+                             
+                            <!-- <v-card-actions>
+                                <v-btn @click="Getlinea(Linea.Nombre)" color='primary' text>
+                                  ver mas
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                              </v-card-actions> --> 
+                              </v-card>
+                              </v-col>
+          
+                            
+                           
+                            </v-row>
+          
+                           </v-container>
+
+                        </v-img>
     
                       </v-col>
                   
@@ -649,55 +711,106 @@ body{
                   
                   </v-col>
                   <v-col class="p-2 fondoscuro" v-if="buscador ==''"   cols="12" >
-                 <v-container>
-                  <v-row>
-                     
-                    <v-col  v-if="banner" v-for="Linea of MenuCategoria" id="lateralder" cols="12" xs="6" sm="12" md="12" lg="3" xl="3" >
-                      <v-card
-                      class="m-auto"
-                      outlined
-                      tile
-                    >
-                   
-                    <v-card-title>{{Linea.Nombre}}</v-card-title>
-                      <v-container fluid>
-                        <v-row dense>
-                          <v-col cols="6"   v-for="articulo of Linea.producto">
-                            <v-card 
-                            @click="openModal('producto',articulo)"
-                            elevation="0"
-                             height="150"
-                            width="125">
-                            
-                           <v-img  xa contain :src="'../img/producto/'+articulo+'.webp'"></v-img>
-                            </v-card>
-                          </v-col>
-                         
-                        </v-row>
-                      </v-container>
-                    <v-card-actions>
-                      <v-btn @click="Getlinea(Linea.Nombre)" color='primary' text>
-                        ver mas
-                      </v-btn>
-                      <v-spacer></v-spacer>
-                    </v-card-actions>
-                    </v-card>
-                    </v-col>
-
+                    
+                  </v-col>
+                  <v-col class="fondoscuro"   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
+                    <v-row>
+                      <v-spacer></v-spacer> <v-col  class="text-center"> </v-col>      <v-spacer></v-spacer> 
+                    </v-row>
                   
-                 
-                  </v-row>
-
-                 </v-container>
                   </v-col>
                  
                   <v-col class="fondoscuro"   v-if="buscador =='' && banner " class="bannerAzul"  cols="12" >
                     <v-row>
-                      <v-spacer></v-spacer> <v-col  class="text-center"> PRODUCTOS DESTACADOS </v-col>      <v-spacer></v-spacer> 
+                      <v-spacer></v-spacer> <v-col  class="text-center"> </v-col>      <v-spacer></v-spacer> 
                     </v-row>
                   
                   </v-col>
                   <v-col  class="fondoscuro" v-if="buscador =='' && banner " cols="12">
+                    <v-row>
+                      <v-col class="bannerAzul text-center" cols="12">
+                       
+                        PENSADOS PARA TI
+                       
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                  
+                        
+                      <v-spacer></v-spacer>
+                      
+                      <v-col class="fondoscuro" >
+                        <v-sheet>
+                          <v-slide-group
+                            
+                            class="pa-4 fondoscuro"
+                          
+                            show-arrows
+                          >
+                            <v-slide-item
+                            
+                              v-for="n in parati"
+                              :key="n"
+                              v-slot="{active,toggle}"
+                            >
+                              <v-card
+                                
+                                class="ma-4"
+                                height="250"
+                                width="200"
+                               
+                              >
+                                <v-row
+                                  class="fill-height"
+                                  align="center"
+                                  justify="center"
+                                >
+                                          <v-col cols="12">
+                                        
+                                            <v-img @click="openModal('producto',n)" xa contain :src="'../img/producto/'+n+'.webp'"></v-img>
+                                          </v-col>
+                                </v-row>
+                              </v-card>
+                            </v-slide-item>
+                          </v-slide-group>
+                        </v-sheet>
+                      </v-col>
+                      <v-spacer></v-spacer>
+                    
+                    </v-row>
+                 <v-container fluid>
+                  <v-row>
+                    <v-col style=" justify-items: center; align-items: center;" cols="12">
+                      <v-carousel
+                      class="carrusel23"
+                      :height="carouselHeight"
+  cycle
+  style=" justify-items: center; align-items: center;"
+  hide-delimiter-background
+  show-arrows-on-hover
+>
+  <v-carousel-item
+  
+    v-for="(item, i) in Carrusel1"
+    :key="i"
+    
+  >
+   <v-img contain :src="item.src"></v-img>
+  </v-carousel-item>
+</v-carousel>
+                    </v-col>
+                  </v-row>
+                 </v-container>
+                    
+                  </v-col>
+                  <v-col  class="fondoscuro" v-if="buscador =='' && banner " cols="12">
+                    <v-row>
+                      <v-col class="bannerAzul text-center" cols="12">
+                       
+                        PRODUCTOS FAVORITOS
+                       
+                        </v-col>
+                    </v-row>
                     <v-row>
                       <v-spacer></v-spacer>
                       <v-col class="fondoscuro" >
@@ -740,6 +853,72 @@ body{
                     
                     </v-row>
                     
+                  </v-col>
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col class="bannerAzul text-center" v-if="buscador =='' && banner " cols="12">
+                       
+                         MARCAS ALIADAS
+                       
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="buscador =='' && banner " >
+                      <v-col >
+                        <template>
+                          <v-sheet
+                          style="background-color: #f3f3f3;"
+                            class="mx-auto"
+                            elevation="8"
+                         
+                          >
+                            <v-slide-group
+                            style="background-color: #f3f3f3;"
+                              v-model="model"
+                              class="pa-4"
+                              active-class="success"
+                              show-arrows
+                              max="4"
+                            >
+                              <v-slide-item
+                              style="background-color: #f3f3f3;"
+                                v-for="n in marca"
+                                :key="n"
+                                v-slot="{ active, toggle }"
+                              >
+                                <v-card
+                                  
+                                  class="ma-4"
+                           
+                                  width="250"
+                               
+                                >
+                                  <v-row
+                                    class="fill-height"
+                                    align="center"
+                                    justify="center"
+                                  >
+                                  <v-img  @click="getmarca(n)" contain :src="'../img/marca/'+n+'.png'"></v-img>
+                                  </v-row>
+                                </v-card>
+                              </v-slide-item>
+                            </v-slide-group>
+                          </v-sheet>
+                        </template>
+                        
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col v-if="buscador =='' && banner " style="padding: 1.6rem;" cols="12">
+                    <v-row>
+                      <v-spacer></v-spacer>
+                      <v-col cols="6" lg="4" xs="6">
+                        <v-img class="rounded-xxl" src="../img/s1/1.png"></v-img>
+                      </v-col>
+                      <v-col cols="6" lg="4" xs="6">
+                        <v-img   class="rounded-xxl" src="../img/s1/2.png"></v-img>
+                      </v-col>
+                      <v-spacer></v-spacer>
+                    </v-row>
                   </v-col>
                   <v-col  class="fondoscuro"  cols="12">
                     <v-row>
@@ -1090,9 +1269,9 @@ body{
   <script src='../dist/main.js'>
 
   </script>
-  <!-- Start of tiendasdaka6919 Zendesk Widget script -->
+  <!-- Start of tiendasdaka6919 Zendesk Widget script 
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=eebf7265-cb0a-47a4-9f1b-5d7568e59f24"> </script>
-<!-- End of tiendasdaka6919 Zendesk Widget script -->
+ End of tiendasdaka6919 Zendesk Widget script -->
 </body>
 
 </html>

@@ -1,12 +1,12 @@
 
 //import ubicanos from './component/ubicanos.vue'
-import {Feature, Map, Overlay, View} from 'ol/index.js';
+/*import {Feature, Map, Overlay, View} from 'ol/index.js';
 import {OSM, Vector as VectorSource} from 'ol/source.js';
 import {Point} from 'ol/geom.js';
 import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
 import {useGeographic} from 'ol/proj.js';
 import {Circle, Fill, Style} from 'ol/style.js';
-
+*/
 //import App from './App.vue'
 import StadiaMaps from 'ol/source/StadiaMaps.js';
 new Vue({
@@ -25,6 +25,35 @@ new Vue({
               municipio:null,
               parroquia:null,
             },
+            marca:[
+              "ANKER",
+              "BREMEN",
+              "DAEWOO",
+              "HAMILTON BEACH",
+              "HYUNDAI",
+              "KITCHENAID",
+              "LG",
+              "OSTER",
+              "RIBELLE",
+              "SAMSUNG",
+              "WHIRLPOOL",
+              "XIAOMI"
+            ],
+            model:null,
+            carouselHeight: '500px',
+            Carrusel1: [
+             
+              {
+                src: '../img/banner/slite/1.webp',
+              },
+              {
+                src: '../img/banner/slite/2.webp',
+              },
+              {
+                src: '../img/banner/slite/3.webp',
+              },
+             
+            ],
             pag:{
               cant:0,
               inicio:0,
@@ -36,21 +65,28 @@ new Vue({
             zoom: 2,
             MenuCategoria:[
               {
-                Nombre:"Linea Digital",
-                producto:["LD-00000027"]
+                titulo:"HOGAR",
+                Nombre:"Linea Hogar",
+                producto:["LH-00000006"]
               },
               {
+                titulo:"ELECTRODOMÉSTICOS",
                 Nombre:"Linea Blanca",
                 producto:["LB-00000001"]
               },
               {
+                titulo:"TV - AUDIO",
                 Nombre:"Linea Marron",
                 producto:["LM-00000023"]
               },
               {
-                Nombre:"Linea Hogar",
-                producto:["LH-00000006"]
-              }
+                titulo:"TECNOLOGÍA",
+                Nombre:"Linea Digital",
+                producto:["LD-00000027"]
+              },
+             
+             
+             
               
             ],
             comprar:true,
@@ -79,6 +115,9 @@ new Vue({
                 }
             ],
             catselect:'',
+            parati:[
+
+            ],
             Pdestacado:[
               {sap:'LB-00000478'},
               {sap:'LB-00001048'},
@@ -171,14 +210,14 @@ new Vue({
             ],
             items: [
                 {
-                    src: 'img/banner/1.png',
+                    src: 'img/banner/1.webp',
                 },
 
                 {
-                    src: 'img/banner/4.png',
+                    src: 'img/banner/4.webp',
                 },
                 {
-                    src: 'img/banner/5.png',
+                    src: 'img/banner/5.webp',
                 },
 
             ],
@@ -203,7 +242,11 @@ new Vue({
    
 
     async mounted() {
+      this.updateCarouselHeight();
+      window.addEventListener('resize', this.updateCarouselHeight);
+
         this.ProductoDestacado()
+        this.productoparati()
          this.ProductoLinea()
          this.getTiendas()
          this.getstado()
@@ -233,6 +276,9 @@ new Vue({
     },
   
     methods: {
+      updateCarouselHeight() {
+        this.carouselHeight = window.innerWidth < 1400 ? '120px' : '500px';
+      },
      async preload(a){
    if(a == 'promociones'){
     if(this.stop){
@@ -321,11 +367,32 @@ new Vue({
                     this.banner = false;
                     this.titulo = a;
       },
+      async getmarca(a){
+
+        let categoria = [];
+    
+                    let res = await fetch('/producto/list_marca/'+a+'/0/20')
+                    this.pag.inicio = 0
+                    this.pag.fin = 20
+                    this.pag.ruta = '/producto/list_marca/'+a
+                    this.pag.actual = 1
+                    res = await res.json()
+                    this.articulos = res.valor
+                    this.pag.cant = res.cand
+                    this.banner = false;
+                    this.titulo = a;
+      },
         async ProductoDestacado(){
           let consul = await fetch('/producto/destacado')
           consul = await consul.json()
           
           this.Pdestacado = await  consul
+         },
+         async  productoparati(){
+          let consul = await fetch('/producto/parati')
+          consul = await consul.json()
+          
+          this.parati = await  consul
          },
 
          async ProductoLinea(a){
@@ -383,8 +450,8 @@ new Vue({
         },
        
         SendWhs() {
-     
-            let total = 'Hola '+this.cliente.nombre+"%0A%0A Bienvenido(a) a tiendas daka %0A";
+     let total = "Bienvenido(a) a tiendas daka, gracias por comprar con nosotros."
+           // let  = 'Hola '+this.cliente.nombre+"%0A%0A Bienvenido(a) a tiendas daka %0A";
             if(this.metodoSelect == 'Delivery'){
               total += 'Direccion del Envio : %0A';
               total += 'Estado:'+this.cliente.estado.nombre+" ,  Municipio:"+this.cliente.municipio.nombre+' , Parroquia:'+this.cliente.parroquia.nombre+'%0A';

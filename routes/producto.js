@@ -68,7 +68,7 @@ try{
 router.get('/destacado',  async (req,res)=>{
  try{
   let list = [];
-  let val = await  articulo.find({status:true}).limit(4).sort({uv:-1});
+  let val = await  articulo.find({status:true}).limit(6).sort({uv:-1});
   for(let i of val){
 
     list.push(i.sap)
@@ -82,15 +82,32 @@ router.get('/destacado',  async (req,res)=>{
   res.json([])
  }
 })
+router.get('/parati',  async (req,res)=>{
+  try{
+   let list = [];
+   let val = await  articulo.find({status:true}).limit(6).sort({uv:1});
+   for(let i of val){
+ 
+     list.push(i.sap)
+     
+   }
+  
+   res.json(list)
+  }catch(err){
+   
+   console.log(err)
+   res.json([])
+  }
+ })
 router.get('/lineas/:linea',  async (req,res)=>{
   try{
     let list = [];
   let cant  =  await  articulo.find({familia:req.params.linea,status:true}).count()
 
-  cant = cant - 4
+  cant = cant - 3
   cant = Math.round(Math.random() * cant)
 
-  let val = await  articulo.find({familia:req.params.linea,status:true}).skip(cant).limit(4)
+  let val = await  articulo.find({familia:req.params.linea,status:true}).skip(cant).limit(3)
   
   for(let i of val){
 
@@ -232,6 +249,35 @@ try{
               res.json([])
             }
             })
+            router.get('/list_marca/:desp/:inicio/:fin',  async (req,res)=>{
+
+              try{
+                       //descripcion para la busqueda
+          /*{descripcion: { $regex: '.*' +  + '.*' } }  */
+          let descrip = req.params.desp
+          
+          let list = [];
+        let cand =   await  articulo.find({marca:descrip,status:true}).count()
+          let ar = await  articulo.find({marca:descrip,status:true}).skip(req.params.inicio).limit(req.params.fin)
+      
+          for( let p of ar ){ 
+            let prod = await  Producto.findOne({sap:p.sap})
+                
+             
+             
+              if(prod){
+                list.push({sap:p.sap,promo:p.promo, categoria:p.categoria,precio:p.precio,descripcion:prod.descripcion,marca:p.marca,familia:p.familia,view:true})
+            }
+             
+          }
+         
+             res.json({valor:list,cand:cand})
+  
+              }catch(err){
+                console.log(err,"162")
+                res.json([])
+              }
+              })
             router.get('/list_linea/:desp/:inicio/:fin',  async (req,res)=>{
 
               try{
