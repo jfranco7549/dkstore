@@ -277,7 +277,7 @@ new Vue({
   
     methods: {
       updateCarouselHeight() {
-        this.carouselHeight = window.innerWidth < 1400 ? '120px' : '500px';
+        this.carouselHeight = window.innerWidth < 1000 ? '120px' : '500px';
       },
      async preload(a){
    if(a == 'promociones'){
