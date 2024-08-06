@@ -26,7 +26,7 @@ router.get('/menu/:tipo',  async (req,res)=>{
       if(req.params.tipo == 'promociones'){
         res.render('index',{menu:'promociones'})
       }else{
-        res.render('index',{menu:''})
+        res.render('index',{menu:req.params.tipo})
       }
     
       //res.redirect('index.html')

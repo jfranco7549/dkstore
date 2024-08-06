@@ -288,6 +288,15 @@ new Vue({
     }
      
    }
+   console.log(a)
+   if(a[0] == 'L'){
+    if(this.stop){
+      this.openModal('producto',a)
+      this.stop = false
+    }
+     
+   }
+
       },
       async getstado(){
         let res = await fetch("/direccion/getestado")
@@ -396,6 +405,7 @@ new Vue({
          },
 
          async ProductoLinea(a){
+
           let res =[]
           for(let linea in this.MenuCategoria){
              let consul = await fetch('/producto/lineas/'+this.MenuCategoria[linea].Nombre)
@@ -403,7 +413,6 @@ new Vue({
           res = await consul
           this.MenuCategoria[linea].producto = res
         
-  
           }
          
     

@@ -358,13 +358,22 @@ try{
  
 //237 optiene informacion del [producto ]
 router.get('/getproducto/:sap',  async (req,res)=>{
+
+ 
 try{
+  if(!req.params.sap){
+    res.json({sap:"LD-0000000",categoria:'',precio:'0',promo:false,descripcion:"ARTICULO NO EXISTE",marca:'',familia:'',view:false})
+   }
 
   let articulos = await  articulo.findOne({sap:req.params.sap})
  
+ if(!articulos){
+  console.log(articulos, "no existe")
+ return res.json({sap:"LD-0000000",categoria:'',precio:'0',promo:false,descripcion:"ARTICULO NO EXISTE",marca:'',familia:'',view:false})
+ }
   let ar = await  Producto.findOne({sap:req.params.sap})
   
-     res.json({sap:articulos.sap,categoria:articulos.categoria,precio:articulos.precio,promo:articulo.promo,descripcion:ar.descripcion,marca:articulos.marca,familia:articulos.familia,view:true})
+  return  res.json({sap:articulos.sap,categoria:articulos.categoria,precio:articulos.precio,promo:articulo.promo,descripcion:ar.descripcion,marca:articulos.marca,familia:articulos.familia,view:true})
     
 }catch(err){
   console.log(err,'237')
