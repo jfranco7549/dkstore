@@ -68,7 +68,9 @@ try{
 router.get('/destacado',  async (req,res)=>{
  try{
   let list = [];
-  let val = await  articulo.find({status:true}).limit(6).sort({uv:-1});
+  let val = await  articulo.find({status:true,categoria: {
+    $ne: "repuesto"
+  }}).limit(6).sort({uv:-1});
   for(let i of val){
 
     list.push(i.sap)
@@ -85,7 +87,9 @@ router.get('/destacado',  async (req,res)=>{
 router.get('/parati',  async (req,res)=>{
   try{
    let list = [];
-   let val = await  articulo.find({status:true}).limit(6).sort({uv:1});
+   let val = await  articulo.find({status:true,categoria: {
+    $ne: "repuesto"
+  }}).limit(6).sort({uv:1});
    for(let i of val){
  
      list.push(i.sap)
@@ -102,12 +106,16 @@ router.get('/parati',  async (req,res)=>{
 router.get('/lineas/:linea',  async (req,res)=>{
   try{
     let list = [];
-  let cant  =  await  articulo.find({familia:req.params.linea,status:true}).count()
+  let cant  =  await  articulo.find({familia:req.params.linea,status:true,categoria: {
+    $ne: "repuesto"
+  }}).count()
 
   cant = cant - 3
   cant = Math.round(Math.random() * cant)
 
-  let val = await  articulo.find({familia:req.params.linea,status:true}).skip(cant).limit(3)
+  let val = await  articulo.find({familia:req.params.linea,status:true,categoria: {
+    $ne: "repuesto"
+  }}).skip(cant).limit(3)
   
   for(let i of val){
 
@@ -128,8 +136,12 @@ router.get('/lineas/:linea',  async (req,res)=>{
 router.get('/list',  async (req,res)=>{
 try{
   let list = [];
-  let val = await  articulo.find({status:true}).limit(20)
-  let cant =  await  articulo.find({status:true}).count() 
+  let val = await  articulo.find({status:true,categoria: {
+    $ne: "repuesto"
+  }}).limit(20)
+  let cant =  await  articulo.find({status:true,categoria: {
+    $ne: "repuesto"
+  }}).count() 
 
   for( let articulo of val ){
     if(articulo.status){
@@ -148,6 +160,38 @@ try{
   res.json({list:[],cant:0})
 }
       })
+
+      router.get('/listR',  async (req,res)=>{
+        try{
+          let list = [];
+          let val = await  articulo.find({
+            sap: {
+              $regex: "^(31|32)"
+            }
+          }).limit(20)
+          let cant =  await  articulo.find({
+            sap: {
+              $regex: "^(31|32)"
+            }
+          }).count() 
+        
+          for( let articulo of val ){
+            if(articulo.status){
+              let ar = await  Producto.findOne({sap:articulo.sap})
+             
+              if(ar){
+                list.push({sap:articulo.sap,categoria:articulo.categoria,promo:articulo.promo,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+              }
+            }
+             
+          }
+        
+             res.json({valor:list,n:cant})
+        }catch(err){
+         
+          res.json({list:[],cant:0})
+        }
+              })
       router.get('/promo/:inicio/:fin',  async (req,res)=>{
         try{
           if(req.params.inicio < 0){
@@ -158,8 +202,12 @@ try{
           }
           
           let list = [];
-          let val = await  articulo.find({status:true,promo:true}).skip(req.params.inicio).limit(req.params.fin)
-          let cont = await  articulo.find({status:true,promo:true}).count()
+          let val = await  articulo.find({status:true,promo:true,categoria: {
+            $ne: "repuesto"
+          }}).skip(req.params.inicio).limit(req.params.fin)
+          let cont = await  articulo.find({status:true,promo:true,categoria: {
+            $ne: "repuesto"
+          }}).count()
          
           for( let articulo of val ){
             if(articulo.status){
@@ -180,6 +228,47 @@ try{
 
         }
             })
+            router.get('/listR/:inicio/:fin',  async (req,res)=>{
+              try{
+                if(req.params.inicio < 0){
+                  req.params.inicio = 0
+                }
+                if(req.params.fin < 0){
+                  req.params.fin = 0
+                }
+               
+                let list = [];
+                let val = await  articulo.find({
+                  sap: {
+                    $regex: "^(31|32)"
+                  }
+                }).skip(req.params.inicio).limit(req.params.fin)
+                let cont = await  articulo.find({
+                  sap: {
+                    $regex: "^(31|32)"
+                  }
+                }).count()
+       
+                for( let articulo of val ){
+                  if(articulo.status){
+                    let ar = await  Producto.findOne({sap:articulo.sap})
+                  
+                    if(ar){
+                      list.push({sap:articulo.sap,categoria:articulo.categoria,promo:articulo.promo,precio:articulo.precio,descripcion:ar.descripcion,marca:articulo.marca,familia:articulo.familia,view:true})
+                    }
+                  }
+                   
+                }
+              
+                   res.json({valor:list,n:cont})
+      
+              }catch(err){
+                console.log(err)
+                res.json(list)
+      
+              }
+                  })
+
       router.get('/list/:inicio/:fin',  async (req,res)=>{
         try{
           if(req.params.inicio < 0){
@@ -190,8 +279,12 @@ try{
           }
          
           let list = [];
-          let val = await  articulo.find({status:true}).skip(req.params.inicio).limit(req.params.fin)
-          let cont = await  articulo.find({status:true}).count()
+          let val = await  articulo.find({status:true,categoria: {
+            $ne: "repuesto"
+          }}).skip(req.params.inicio).limit(req.params.fin)
+          let cont = await  articulo.find({status:true,categoria: {
+            $ne: "repuesto"
+          }}).count()
  
           for( let articulo of val ){
             if(articulo.status){
@@ -228,7 +321,9 @@ try{
      
         for( let p of prod ){
 
-          let ar = await  articulo.findOne({sap:p.sap,status:true})
+          let ar = await  articulo.findOne({sap:p.sap,status:true,categoria: {
+            $ne: "repuesto"
+          }})
               
            
            
@@ -249,6 +344,41 @@ try{
               res.json([])
             }
             })
+            //descrip producto
+            router.get('/list_desr/:desp/:inicio/:fin',  async (req,res)=>{
+
+              try{
+                       //descripcion para la busqueda
+          /*{descripcion: { $regex: '.*' +  + '.*' } }  */
+          let descrip = req.params.desp
+         
+          let list = [];
+        let cand = await Producto.find( {linea:"repuesto" ,descripcion: { $regex: '.*' + descrip + '.*' } }).count()
+        
+          let prod = await  Producto.find( {linea:"repuesto" ,descripcion: { $regex: '.*' + descrip + '.*' } }).skip(req.params.inicio).limit(req.params.fin)
+   
+          for( let p of prod ){
+ 
+            let ar = await  articulo.findOne({sap:p.sap,categoria:'repuesto'})
+           
+             
+              if(ar){
+               
+                  list.push({sap:ar.sap,categoria:ar.categoria,promo:ar.promo,precio:ar.precio,descripcion:p.descripcion,marca:ar.marca,familia:ar.familia,view:true})
+              
+            }
+             
+          }
+          
+        
+          
+             res.json({valor:list,n:cand})
+  
+              }catch(err){
+                console.log(err,"162")
+                res.json([])
+              }
+              })
             router.get('/list_marca/:desp/:inicio/:fin',  async (req,res)=>{
 
               try{
@@ -257,8 +387,12 @@ try{
           let descrip = req.params.desp
           
           let list = [];
-        let cand =   await  articulo.find({marca:descrip,status:true}).count()
-          let ar = await  articulo.find({marca:descrip,status:true}).skip(req.params.inicio).limit(req.params.fin)
+        let cand =   await  articulo.find({marca:descrip,status:true,categoria: {
+          $ne: "repuesto"
+        }}).count()
+          let ar = await  articulo.find({marca:descrip,status:true,categoria: {
+            $ne: "repuesto"
+          }}).skip(req.params.inicio).limit(req.params.fin)
       
           for( let p of ar ){ 
             let prod = await  Producto.findOne({sap:p.sap})

@@ -222,6 +222,7 @@ new Vue({
 
             ],
             articulos: [],
+            articulosR:[],
             stop:true,
             categoriaico:{},
             buscador: '',
@@ -272,7 +273,8 @@ new Vue({
         }
        
         this.getproducto()
-      
+          
+        this.getproductoR()
     },
   
     methods: {
@@ -358,6 +360,18 @@ new Vue({
         if(cant == 0 ){
           cant = 1;
         }
+        this.pag.cant = cant
+      },
+      async getproductoR(){
+
+        let res = await fetch('/producto/listR')
+        res = await res.json()
+        this.articulosR = res.valor
+        let cant = res.n
+        if(cant == 0 ){
+          cant = 1;
+        }
+        this.pag.ruta='/producto/listR',
         this.pag.cant = cant
       },
        
@@ -457,7 +471,11 @@ new Vue({
                 return "#143E8F"
             }
         },
-       
+       contacto(){
+        
+        let msm = 'https://api.whatsapp.com/send/?phone=584244624218'
+        location.href = msm
+       },
         SendWhs() {
      let total = "Bienvenido(a) a tiendas daka, gracias por comprar con nosotros."
            // let  = 'Hola '+this.cliente.nombre+"%0A%0A Bienvenido(a) a tiendas daka %0A";
@@ -519,11 +537,40 @@ new Vue({
           this.articulos = res.valor
 
         },
+        async nextpr(tipo){
+
+          let res 
+          if(tipo == 'up'){
+           
+            this.pag.inicio = this.pag.inicio+20
+            this.pag.fin = this.pag.fin+20
+             res = await fetch(this.pag.ruta+"/"+this.pag.inicio+'/'+this.pag.fin)
+          }
+          if(tipo == 'down'){
+            
+            this.pag.inicio = this.pag.inicio-20
+            this.pag.fin = this.pag.fin-20
+             res = await fetch(this.pag.ruta +"/"+ this.pag.inicio +'/'+this.pag.fin)
+          }
+
+          if(tipo == 'click'){
+      
+            this.pag.inicio = (this.pag.actual*20)-20
+          
+            this.pag.fin = this.pag.actual*20
+            res = await fetch(this.pag.ruta+"/"+ this.pag.inicio +'/'+this.pag.fin)
+          }
+         
+          res = await res.json()
+
+          this.articulosR = res.valor
+
+        },
 
        async filtro(a) {
         if(a == 'inicio'){
          
-          this.buscador = ''
+          this.buscador = null
           this.banner = true
           this.pag.ruta = '/producto/list'
           this.pag.inicio = 0
@@ -545,6 +592,31 @@ new Vue({
             this.pag.cant = res.n
             this.titulo = this.buscador;
         },
+        async filtror(a) {
+          if(a == 'inicio' || a == '' ){
+           
+            this.buscador = ''
+            this.banner = true
+            this.pag.ruta = '/producto/listR'
+            this.pag.inicio = 0
+            this.pag.fin = 20
+            this.pag.actual = 1
+            this.getproductoR()
+            return 0;
+          }
+              let categoria = [];
+  
+              let res = await fetch('/producto/list_desr/'+this.buscador.toUpperCase()+'/0/20')
+              this.pag.inicio = 0
+              this.pag.fin = 20
+              this.pag.ruta = '/producto/list_desr/'+this.buscador.toUpperCase()
+              this.pag.actual = 1
+               res = await res.json()
+               this.banner = false
+              this.articulosR = res.valor
+              this.pag.cant = res.n
+              this.titulo = this.buscador;
+          },
        async filtroC(a) {
      
         this.banner = false

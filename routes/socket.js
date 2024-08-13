@@ -19,6 +19,14 @@ router.get('/',  async (req,res)=>{
   res.render('index',{menu:''})
   //res.redirect('index.html')
      })
+
+
+     router.get('/repuestos/',  async (req,res)=>{
+      valor = valor+1
+      console.log("intervalo"+valor)
+      res.render('repuesto',{menu:''})
+      //res.redirect('index.html')
+         })
     
 router.get('/menu/:tipo',  async (req,res)=>{
       valor = valor+1
